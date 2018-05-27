@@ -12,9 +12,12 @@ import com.jimfo.popular_movies.ItemClickListener;
 import com.jimfo.popular_movies.R;
 import com.jimfo.popular_movies.model.AdjustableImageView;
 import com.jimfo.popular_movies.model.Film;
+import com.jimfo.popular_movies.utils.GeneralUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static com.jimfo.popular_movies.utils.GeneralUtils.getWxH;
 
 public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomViewHolder> {
 
@@ -25,12 +28,16 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
     private ItemClickListener mListener;
     private LayoutInflater mInflater;
 
+    /**
+     * Purpose : Constructor
+     * @param context : Context of the calling Activity
+     * @param films   : ArrayList<Film></Film>
+     */
     public MovieAdapterRV(Context context, ArrayList<Film> films) {
         this.mFilms = films;
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
     }
-
 
     @Override
     public MovieAdapterRV.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,29 +45,18 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
         return new CustomViewHolder(v);
     }
 
+    /**
+     * Purpose : Update the contents of the itemView to reflect the item at the given position.
+     *
+     * @param holder : Custom ViewHolder
+     * @param position : Index of the item
+     */
     @Override
     public void onBindViewHolder(MovieAdapterRV.CustomViewHolder holder, int position) {
         Film film = mFilms.get(position);
+        int[] wxh = getWxH(mContext);
 
-        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-        int width = (int) (displayMetrics.widthPixels / displayMetrics.density);
-        final float scale = mContext.getResources().getDisplayMetrics().density;
-        int pixels = (int) (width * scale + 0.5f);
-        int mWidth;
-        int mHeight;
-
-        if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            mWidth = (pixels / 2);
-            mHeight = (int) ((pixels / 2) * 1.5f);
-        }
-        else {
-            width = (int) (displayMetrics.widthPixels / displayMetrics.density);
-            pixels = (int) (width * scale + 0.5f);
-            mWidth = (pixels / 3);
-            mHeight = (int) ((pixels / 3) * 1.5f);
-        }
-
-        holder.aiv.setLayoutParams(new RecyclerView.LayoutParams(mWidth, mHeight));
+        holder.aiv.setLayoutParams(new RecyclerView.LayoutParams(wxh[0], wxh[1]));
         Picasso.with(mContext).load(film.getmMoviePoster()).into(holder.aiv);
     }
 
@@ -75,9 +71,9 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public AdjustableImageView aiv;
+        AdjustableImageView aiv;
 
-        public CustomViewHolder(View itemView) {
+        CustomViewHolder(View itemView) {
             super(itemView);
             this.aiv = itemView.findViewById(R.id.movie_iv);
             itemView.setOnClickListener(this);

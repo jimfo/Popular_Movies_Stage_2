@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
 import com.jimfo.popular_movies.model.Film;
-import com.jimfo.popular_movies.utils.Colors;
 
 import java.util.ArrayList;
 
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private ArrayList<Film> mFilms;
-    private LinearLayout refreshLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.rv_movies);
-        refreshLL = findViewById(R.id.refreshbar_ll);
+        LinearLayout refreshLL = findViewById(R.id.refreshbar_ll);
         refreshLL.setBackgroundColor(getResources().getColor(R.color.ll_color));
 
         // Layout determined by orientation
@@ -52,28 +50,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
-        Bundle mExtras;
-        Intent i = getIntent();
-        mExtras = i.getExtras();
-
-        if (mExtras != null) {
-            if (mExtras.containsKey(this.getResources().getString(R.string.select))) {
-                selection = mExtras.getString(this.getResources().getString(R.string.select));
-            }
-        }
-        else {
-            selection = this.getResources().getString(R.string.popular);
-        }
-
         if (isNetworkAvailable()) {
+
             // Default task will be Popular Movies
             mFilms = new ArrayList<>();
-            getMovies();
-
-            if (selection.equals(this.getResources().getString(R.string.top_rated)))
-                setTitle(this.getResources().getString(R.string.top_rated_movies));
-            else
-                setTitle(this.getResources().getString(R.string.popular_movies));
+            new MovieTask(this, this).execute(this.getResources().getString(R.string.popular));
+            setTitle(this.getResources().getString(R.string.popular_movies));
         }
         else {
             closeOnError();
@@ -139,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private void getMovies() {
 
         new MovieTask(this, this).execute(selection);
-
-
     }
 
     @Override
