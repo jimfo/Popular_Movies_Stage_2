@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+    <string name="popularMovies">Popular Movies</string>
+    <string name="topRated">Top Rated</string>
+    <string name="myFavorites">Favorites</string>
+
+    <!-- Strings related to Detail Activity  -->
+    <string name="movie_poster">Movie poster image</string>
+    <string name="back_drop">Movie back drop image</string>
+    <string name="dna">Data not available</string>
+    <string name="out_of">/10</string>
+    <string name="movieKey">movie</string>
+    <string name="extrasKey">select</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+
+    <!-- Strings related to TMDB -->
+    <string name="baseUrl">http://api.themoviedb.org/3/movie/</string>
+    <string name="get">GET</string>
+    <string name="inputstreamError">Error with creating URL</string>
+    <string name="responseCodeError">Error Response Code</string>
+    <string name="urlError">Error creating url</string>
+    <string name="jsonError">Error receiving Json</string>
+    <string name="statusCode">status_code</string>
+    <string name="results">results</string>
+    <string name="utf8">UTF-8</string>
+    <string name="voteAverage">vote_average</string>
+    <string name="title">title</string>
+    <string name="path">http://image.tmdb.org/t/p/w780</string>
+    <string name="posterPath">poster_path</string>
+    <string name="overview">overview</string>
+    <string name="releaseDate">release_date</string>
+    <string name="backDrop">backdrop_path</string>
+    <string name="noResource">The resource you requested could not be found.</string>
+    <string name="parseError">Problem parsing the MOVIE JSON results</string>
+    <string name="id">id</string>
+
+    <!-- Strings related to Main Activity -->
+    <string name="error_message">Unable to process your request, closing application</string>
+    <string name="select">select</string>
+    <string name="movie">movie</string>
+    <string name="popular">popular</string>
+    <string name="top_rated">top_rated</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="website"><a href="http://www.JamesFody.com">JamesFody.com</a></string>
+    <string name="updating">Update&#160;&#160;</string>
+</resources>

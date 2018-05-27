@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standardPadding">16dp</dimen>
+    <dimen name="rl_marginTop">-30dp</dimen>
+    <dimen name="tv_marginTop">38dp</dimen>
+    <dimen name="tv_paddingBottom">4dp</dimen>
+    <dimen name="littleSpace">2dp</dimen>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_movies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/rv_color"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/refreshbar_ll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/littleSpace"
+        android:paddingTop="@dimen/littleSpace">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:autoLink="web"
+
+            android:fontFamily="casual"
+            android:padding="@dimen/tv_paddingBottom"
+            android:text="@string/website"
+            android:textColorLink="@color/detail_activity_btn"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:id="@+id/updateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
+            android:padding="@dimen/tv_paddingBottom"
+            android:gravity="end"
+            android:text="@string/updating"
+            android:textColor="@color/detail_activity_btn"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_refresh_black_24dp"
+            android:drawableRight="@drawable/ic_refresh_black_24dp"
+            android:focusable="true"
+            android:fontFamily="casual"
+
+
+            android:textSize="12sp"
+
+        />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
