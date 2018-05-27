@@ -47,6 +47,8 @@
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="favorite_movies">Favorite Movies</string>
-    <string name="website"><a href="http://www.JamesFody.com">JamesFody.com</a></string>
+    <string name="website">
+        <a href="http://www.JamesFody.com">JamesFody.com</a>
+    </string>
     <string name="updating">Update&#160;&#160;</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.jimfo.popular_movies;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,11 +17,9 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import com.jimfo.popular_movies.databinding.ActivityDetailBinding;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.utils.Colors;
 import com.squareup.picasso.Picasso;
@@ -31,49 +30,19 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
 
+    ActivityDetailBinding mBinding;
     Bundle mExtras;
-    ImageView moviePoster, backDrop;
-    Button reviewsBtn, trailersBtn;
-    TextView plot_summary, reviewsTv;
-    TextView movieTitle, movieRelease, movieRating;
-    RelativeLayout relLay;
     Film movie;
-    String selection = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        String title;
-        String releaseDate;
-        String voteAverage;
-        String plotSummary = "";
-        String moviePath = "";
-        String backdropPath = "";
-
-        moviePoster = findViewById(R.id.movie_poster);
-        backDrop = findViewById(R.id.back_drop);
-        plot_summary = findViewById(R.id.plot_summary);
-        relLay = findViewById(R.id.rel_lay);
-        movieTitle = findViewById(R.id.movie_title);
-        movieRelease = findViewById(R.id.movie_release);
-        movieRating = findViewById(R.id.movie_rating);
-        reviewsBtn = findViewById(R.id.reviews_btn);
-        trailersBtn = findViewById(R.id.trailers_btn);
-
-        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        int width = (int) (displayMetrics.widthPixels / displayMetrics.density);
-        final float scale = this.getResources().getDisplayMetrics().density;
-        int pixels = (int) (width * scale + 0.5f);
-        int pWidth = (pixels / 3);
-        int pHeight = (int) ((pixels / 3) * 1.25f);
-        int bHeight = (pixels / 2);
-        SpannableString ss1;
 
         Intent i = getIntent();
         mExtras = i.getExtras();
@@ -82,43 +51,60 @@ public class DetailActivity extends AppCompatActivity {
             if (mExtras.containsKey(this.getResources().getString(R.string.movieKey))) {
                 movie = mExtras.getParcelable(this.getResources().getString(R.string.movieKey));
                 if (movie != null) {
-                    title = movie.getmTitle();
-                    releaseDate = movie.getmReleaseDate().substring(0, 4);
-                    voteAverage = movie.getmVoteAverage();
-                    plotSummary = movie.getmPlotSummary();
-                    moviePath = movie.getmMoviePoster();
-                    backdropPath = movie.getmBackdrop();
-                    setTitle(title);
-
-                    movieTitle.setText(title);
-                    movieRelease.setText(releaseDate);
-                    String rating = voteAverage + getResources().getString(R.string.out_of);
-                    ss1 = new SpannableString(rating);
-                    ss1.setSpan(new RelativeSizeSpan(2f), 0, ss1.length() - 3, 0);
-                    movieRating.setText(ss1);
+                    displayInfo(movie);
                 }
             }
-            if (mExtras.containsKey(this.getResources().getString(R.string.extrasKey))) {
-                selection = mExtras.getString(this.getResources().getString(R.string.extrasKey));
-            }
         }
+    }
 
-        moviePoster.setLayoutParams(new RelativeLayout.LayoutParams(pWidth, pHeight));
-        backDrop.setLayoutParams(new RelativeLayout.LayoutParams(pixels, bHeight));
+    public void displayInfo(Film film){
+        int[] wxh = getWxH();
 
-        Picasso.with(this).load(moviePath).into(moviePoster);
-        loadImage(backdropPath);
-        Picasso.with(this).load(backdropPath).into(backDrop);
-        plot_summary.setText(plotSummary);
+        mBinding.movieTitle.setText(film.getmTitle());
+        mBinding.movieRelease.setText(film.getmReleaseDate().substring(0, 4));
+        mBinding.movieRating.setText(createRatingString(film.getmVoteAverage()));
+        mBinding.plotSummary.setText(film.getmPlotSummary());
+
+        mBinding.moviePoster.setLayoutParams(new RelativeLayout.LayoutParams(wxh[0], wxh[1]));
+        Picasso.with(this).load(film.getmMoviePoster()).into(mBinding.moviePoster);
+
+        mBinding.backDrop.setLayoutParams(new RelativeLayout.LayoutParams(wxh[2], wxh[3]));
+        Picasso.with(this).load(film.getmBackdrop()).into(mBinding.backDrop);
+
+        loadImage(film.getmBackdrop());
+
+        setTitle(film.getmTitle());
+    }
+
+    public SpannableString createRatingString(String va){
+        String rating = va + getResources().getString(R.string.out_of);
+        SpannableString ss1 = new SpannableString(rating);
+        ss1.setSpan(new RelativeSizeSpan(2f), 0, ss1.length() - 3, 0);
+        return ss1;
+    }
+
+    public int[] getWxH(){
+
+        int[] WxH = new int[4];
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        int width = (int) (displayMetrics.widthPixels / displayMetrics.density);
+        final float scale = this.getResources().getDisplayMetrics().density;
+        int pixels = (int) (width * scale + 0.5f);
+        WxH[0] = (pixels / 3);
+        WxH[1] = (int) ((pixels / 3) * 1.25f);
+        WxH[2] = pixels;
+        WxH[3] = (pixels / 2);
+
+        return WxH;
     }
 
     public void loadImage(String path) {
         final Target target = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                assert backDrop != null;
+                assert mBinding.backDrop != null;
 
-                backDrop.setImageBitmap(bitmap);
+                mBinding.backDrop.setImageBitmap(bitmap);
 
                 setColors(Colors.getDominantColor(bitmap));
             }
@@ -133,7 +119,7 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         };
-        backDrop.setTag(target);
+        mBinding.backDrop.setTag(target);
         Picasso.with(this).load(path).into(target);
 
     }
@@ -145,8 +131,9 @@ public class DetailActivity extends AppCompatActivity {
      */
     private void setColors(int color) {
 
-        reviewsBtn.setBackgroundColor(color);
-        trailersBtn.setBackgroundColor(color);
+        mBinding.reviewsBtn.setBackgroundColor(color);
+
+        mBinding.trailersBtn.setBackgroundColor(color);
 
         Window window = this.getWindow();
 
