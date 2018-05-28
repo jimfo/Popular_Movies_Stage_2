@@ -168,6 +168,7 @@ public class TmdbUtils {
                             film.setmPlotSummary(jo.optString(context.getString(R.string.overview), context.getString(R.string.dna)));
                             film.setmReleaseDate(jo.optString(context.getString(R.string.releaseDate), context.getString(R.string.dna)));
                             film.setmBackdrop(context.getString(R.string.path) + jo.optString(context.getString(R.string.backDrop), context.getString(R.string.dna)));
+                            film.setmLanguage(jo.optString(context.getString(R.string.language), context.getString(R.string.dna)));
 
                             films.add(film);
                         }

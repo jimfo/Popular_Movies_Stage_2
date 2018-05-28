@@ -30,9 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:autoLink="web"
-
             android:fontFamily="casual"
             android:padding="@dimen/tv_paddingBottom"
             android:text="@string/website"
@@ -41,12 +39,13 @@
 
 
         <TextView
-            android:id="@+id/updateTime"
+            android:id="@+id/update_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="viewEnd"
             android:padding="@dimen/tv_paddingBottom"
             android:gravity="end"
+            android:onClick="update"
             android:text="@string/updating"
             android:textColor="@color/detail_activity_btn"
             android:clickable="true"
@@ -54,8 +53,6 @@
             android:drawableRight="@drawable/ic_refresh_black_24dp"
             android:focusable="true"
             android:fontFamily="casual"
-
-
             android:textSize="12sp"
 
         />

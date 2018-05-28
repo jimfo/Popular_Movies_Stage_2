@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
@@ -32,12 +33,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private ArrayList<Film> mFilms;
+    private TextView updateTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        updateTV = findViewById(R.id.update_tv);
         mRecyclerView = findViewById(R.id.rv_movies);
         LinearLayout refreshLL = findViewById(R.id.refreshbar_ll);
         refreshLL.setBackgroundColor(getResources().getColor(R.color.ll_color));
@@ -64,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     /**
      * Purpose : Method to check for network connectivity
-     *
      * @return : boolean
      */
     public boolean isNetworkAvailable() {
@@ -135,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         else {
             closeOnError();
         }
+    }
+
+    public void update(View v){
+        new MovieTask(this, this).execute(this.getResources().getString(R.string.popular));
     }
 
     // Handle null object

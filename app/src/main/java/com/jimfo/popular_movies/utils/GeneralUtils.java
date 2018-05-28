@@ -8,6 +8,11 @@ import android.util.DisplayMetrics;
 
 public class GeneralUtils {
 
+    /**
+     * Purpose : To get the dominant color from an image and darken color.
+     * @param bitmap : Backdrop poster image
+     * @return : color
+     */
     public static int getDominantColor(Bitmap bitmap) {
         // https://stackoverflow.com/questions/8471236/finding-the-dominant-color-of-an-image-in-an-android-drawable/28145358
 
@@ -23,6 +28,11 @@ public class GeneralUtils {
         return Color.HSVToColor(hsv);
     }
 
+    /**
+     *
+     * @param context : The context of the calling Activity
+     * @return : int
+     */
     private static int getPixels(Context context){
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -31,6 +41,11 @@ public class GeneralUtils {
         return (int) (width * scale + 0.5f);
     }
 
+    /**
+     * Purpose : To set the height and width of an image based on orientation
+     * @param context : The context of the calling Activity
+     * @return : An int array
+     */
     public static int[] getWxH(Context context){
 
         int[] wxh = new int[2];
@@ -48,6 +63,11 @@ public class GeneralUtils {
         return wxh;
     }
 
+    /**
+     * Purpose : To set the height and width of the movie poster image and backdrop poster image
+     * @param context : The context of the calling Activity
+     * @return : An int array
+     */
     public static int[] getDAWxH(Context context){
 
         int[] WxH = new int[4];

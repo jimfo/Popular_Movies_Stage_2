@@ -12,20 +12,22 @@ public class Film implements Parcelable {
     private String mPlotSummary;
     private String mMoviePoster;
     private String mBackdrop;
+    private String mLanguage;
 
     public Film() {
 
     }
 
-    public Film(String title, String id, String releaseDate, String voteAverage, String plot, String image, String backDrop) {
+    public Film(String title, String id, String releaseDate, String voteAverage, String plot,
+                String image, String backDrop, String language) {
         this.mTitle = title;
         this.mId = id;
         this.mReleaseDate = releaseDate;
         this.mVoteAverage = voteAverage;
         this.mPlotSummary = plot;
         this.mMoviePoster = image;
-        this.mBackdrop = backDrop;
-
+        this.mBackdrop    = backDrop;
+        this.mLanguage    = language;
     }
 
     public String getmTitle() {
@@ -84,6 +86,10 @@ public class Film implements Parcelable {
         this.mBackdrop = mBackdrop;
     }
 
+    public String getmLanguage() {return mLanguage; }
+
+    public void setmLanguage(String lang) { this.mLanguage = lang; }
+
     @Override
     public String toString() {
         return "TITLE : " + getmTitle();
@@ -98,7 +104,8 @@ public class Film implements Parcelable {
         mVoteAverage = in.readString();
         mPlotSummary = in.readString();
         mMoviePoster = in.readString();
-        mBackdrop = in.readString();
+        mBackdrop    = in.readString();
+        mLanguage    = in.readString();
     }
 
     @Override
@@ -115,6 +122,7 @@ public class Film implements Parcelable {
         dest.writeString(mPlotSummary);
         dest.writeString(mMoviePoster);
         dest.writeString(mBackdrop);
+        dest.writeString(mLanguage);
     }
 
     @SuppressWarnings("unused")

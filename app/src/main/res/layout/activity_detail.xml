@@ -68,8 +68,10 @@
                     android:layout_below="@id/movieTitle"
                     android:layout_toEndOf="@id/moviePoster"
                     android:layout_toRightOf="@id/moviePoster"
-                    android:paddingBottom="@dimen/tv_paddingBottom"
-                    android:text="@string/dna"/>
+                    android:drawableLeft="@drawable/ic_event_black_24dp"
+                    android:drawableStart="@drawable/ic_event_black_24dp"
+                    android:gravity="center|start"
+                    android:text="@string/release"/>
 
                 <TextView
                     android:id="@+id/movieRating"
@@ -78,7 +80,22 @@
                     android:layout_below="@id/movieRelease"
                     android:layout_toEndOf="@id/moviePoster"
                     android:layout_toRightOf="@id/moviePoster"
+                    android:drawableLeft="@drawable/ic_star_black_24dp"
+                    android:drawableStart="@drawable/ic_star_black_24dp"
+                    android:gravity="center|start"
                     android:text="@string/out_of"/>
+
+                <TextView
+                    android:id="@+id/movieLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/movieRating"
+                    android:layout_toEndOf="@id/moviePoster"
+                    android:layout_toRightOf="@id/moviePoster"
+                    android:drawableLeft="@drawable/ic_language_black_24dp"
+                    android:drawableStart="@drawable/ic_language_black_24dp"
+                    android:gravity="center|start"
+                    android:text="@string/release"/>
             </RelativeLayout>
 
             <LinearLayout

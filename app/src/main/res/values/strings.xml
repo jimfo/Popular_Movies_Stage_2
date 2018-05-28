@@ -11,7 +11,8 @@
     <string name="movie_poster">Movie poster image</string>
     <string name="back_drop">Movie back drop image</string>
     <string name="dna">Data not available</string>
-    <string name="out_of">/10</string>
+    <string name="release">&#160;&#160;%1$s</string>
+    <string name="out_of">&#160;&#160;%1$s/10</string>
     <string name="movieKey">movie</string>
     <string name="extrasKey">select</string>
     <string name="trailers">Trailers</string>
@@ -37,6 +38,7 @@
     <string name="noResource">The resource you requested could not be found.</string>
     <string name="parseError">Problem parsing the MOVIE JSON results</string>
     <string name="id">id</string>
+    <string name="language">original_language</string>
 
     <!-- Strings related to Main Activity -->
     <string name="error_message">Unable to process your request, closing application</string>

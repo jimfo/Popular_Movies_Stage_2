@@ -63,9 +63,10 @@ public class DetailActivity extends AppCompatActivity {
         int[] wxh = getDAWxH(this);
 
         mBinding.movieTitle.setText(film.getmTitle());
-        mBinding.movieRelease.setText(film.getmReleaseDate().substring(0, 4));
-        mBinding.movieRating.setText(createRatingString(film.getmVoteAverage()));
+        mBinding.movieRelease.setText(getResources().getString(R.string.release,film.getmReleaseDate()));
+        mBinding.movieRating.setText(getResources().getString(R.string.out_of,film.getmVoteAverage()));
         mBinding.plotSummary.setText(film.getmPlotSummary());
+        mBinding.movieLanguage.setText(getResources().getString(R.string.release,film.getmLanguage()));
 
         mBinding.moviePoster.setLayoutParams(new RelativeLayout.LayoutParams(wxh[0], wxh[1]));
         Picasso.with(this).load(film.getmMoviePoster()).into(mBinding.moviePoster);
