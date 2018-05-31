@@ -17,4 +17,4 @@ the selected movie. The Status Bar and Action Bar display the average color of t
 using an algorithm that averages the pixel colors. Palette with Picasso sometimes generates an empty
 swatch so I chose to use the average color algorithm.
 
-![3](https://user-images.githubusercontent.com/5784029/40395694-4ee2ef9a-5df7-11e8-9ebc-5624f6c02c67.png)
+![screenshot_2018-05-27-23-12-18_resized](https://user-images.githubusercontent.com/5784029/40595664-fe9acdc6-6203-11e8-8380-8dbe0edbfa73.png)
