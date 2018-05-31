@@ -5,14 +5,15 @@ import android.os.Parcelable;
 
 public class Film implements Parcelable {
 
-    private String mTitle;
     private String mId;
+    private String mTitle;
     private String mReleaseDate;
     private String mVoteAverage;
     private String mPlotSummary;
     private String mMoviePoster;
     private String mBackdrop;
     private String mLanguage;
+    private String mSelection;
 
     public Film() {
 
@@ -89,6 +90,12 @@ public class Film implements Parcelable {
     public String getmLanguage() {return mLanguage; }
 
     public void setmLanguage(String lang) { this.mLanguage = lang; }
+
+    public String getmSelection() { return mSelection; }
+
+    public void setmSelection(String selection) {
+        this.mSelection = selection;
+    }
 
     @Override
     public String toString() {

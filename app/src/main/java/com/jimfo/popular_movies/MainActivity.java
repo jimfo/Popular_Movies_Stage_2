@@ -29,18 +29,17 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private String selection = "";
+    private String ab_title = "Popular Movies";
+    private String db_call = "popular";
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private ArrayList<Film> mFilms;
-    private TextView updateTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        updateTV = findViewById(R.id.update_tv);
         mRecyclerView = findViewById(R.id.rv_movies);
         LinearLayout refreshLL = findViewById(R.id.refreshbar_ll);
         refreshLL.setBackgroundColor(getResources().getColor(R.color.ll_color));
@@ -57,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
             // Default task will be Popular Movies
             mFilms = new ArrayList<>();
-            new MovieTask(this, this).execute(this.getResources().getString(R.string.popular));
-            setTitle(this.getResources().getString(R.string.popular_movies));
+            new MovieTask(this, this).execute(db_call);
+            setTitle(ab_title);
         }
         else {
             closeOnError();
@@ -94,13 +93,15 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         switch (item.getItemId()) {
             case R.id.top_rated:
-                setTitle(this.getResources().getString(R.string.top_rated_movies));
-                selection = this.getResources().getString(R.string.top_rated);
+                ab_title = this.getResources().getString(R.string.top_rated_movies);
+                setTitle(ab_title);
+                db_call = this.getResources().getString(R.string.top_rated);
                 getMovies();
                 return true;
             case R.id.popular_movies:
-                setTitle(this.getResources().getString(R.string.popular_movies));
-                selection = this.getResources().getString(R.string.popular);
+                ab_title = this.getResources().getString(R.string.popular_movies);
+                setTitle(ab_title);
+                db_call = this.getResources().getString(R.string.popular);
                 getMovies();
                 return true;
             case R.id.my_favorites:
@@ -121,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     private void getMovies() {
-
-        new MovieTask(this, this).execute(selection);
+        new MovieTask(this, this).execute(db_call);
+        setTitle(ab_title);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if (movie != null) {
             Intent i = new Intent(this, DetailActivity.class);
             i.putExtra("movie", movie);
-            i.putExtra("select", selection);
+            i.putExtra("select", db_call);
             startActivity(i);
         }
         else {
@@ -140,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     public void update(View v){
-        new MovieTask(this, this).execute(this.getResources().getString(R.string.popular));
+        setTitle(ab_title);
+        new MovieTask(this, this).execute(db_call);
     }
 
     // Handle null object

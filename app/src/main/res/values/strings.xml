@@ -13,10 +13,14 @@
     <string name="dna">Data not available</string>
     <string name="release">&#160;&#160;%1$s</string>
     <string name="out_of">&#160;&#160;%1$s/10</string>
+    <string name="title_space">&#160;&#160;%1$s</string>
+    <string name="save">Save</string>
     <string name="movieKey">movie</string>
     <string name="extrasKey">select</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
+    <string name="action_favorite">Add to favorites</string>
+    <string name="preferences">my_preferences</string>
 
     <!-- Strings related to TMDB -->
     <string name="baseUrl">http://api.themoviedb.org/3/movie/</string>

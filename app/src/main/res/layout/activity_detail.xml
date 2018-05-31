@@ -46,24 +46,38 @@
                     android:paddingEnd="@dimen/standardPadding"
                     android:paddingLeft="@dimen/standardPadding"
                     android:paddingRight="@dimen/standardPadding"
-                    android:paddingStart="@dimen/standardPadding"
-                    android:scaleType="fitXY"/>
+                    android:paddingStart="@dimen/standardPadding"/>
 
                 <TextView
-                    android:id="@+id/movieTitle"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/saveIcon"
+                    android:layout_width="24dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:layout_marginTop="@dimen/tv_marginTop"
                     android:layout_toEndOf="@id/moviePoster"
                     android:layout_toRightOf="@id/moviePoster"
+                    android:layout_alignParentTop="true"
+/>
+
+                <TextView
+                    android:id="@+id/movieTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/tv_marginTop"
+                    android:layout_toRightOf="@id/saveIcon"
+                    android:layout_toEndOf="@id/saveIcon"
                     android:paddingBottom="@dimen/tv_paddingBottom"
+                    android:paddingRight="@dimen/standardPadding"
+                    android:paddingEnd="@dimen/standardPadding"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/dna"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/movieRelease"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/movieTitle"
                     android:layout_toEndOf="@id/moviePoster"

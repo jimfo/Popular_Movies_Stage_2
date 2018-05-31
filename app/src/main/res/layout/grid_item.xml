@@ -4,5 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/littleSpace"
+    android:background="@drawable/image_view_border"
+    android:padding="@dimen/tv_paddingBottom"
     android:adjustViewBounds="true"/>
