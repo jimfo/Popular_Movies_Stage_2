@@ -3,6 +3,7 @@ package com.jimfo.popular_movies;
 import android.os.AsyncTask;
 
 import com.jimfo.popular_movies.model.Film;
+import com.jimfo.popular_movies.utils.NetworkUtils;
 import com.jimfo.popular_movies.utils.TmdbUtils;
 
 import java.lang.ref.WeakReference;
@@ -34,7 +35,7 @@ public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
     @Override
     protected ArrayList<Film> doInBackground(String... args) {
 
-        return TmdbUtils.fetchMovieData(myRef.get(), args[0]);
+        return NetworkUtils.fetchMovieData(myRef.get(), args[0]);
     }
 
     @Override
