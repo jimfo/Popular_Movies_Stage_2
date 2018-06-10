@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-@Entity(tableName = "movie")
+@Entity(tableName = "movies")
 public class Film implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
