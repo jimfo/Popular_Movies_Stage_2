@@ -47,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         ActionBar actionBar = getSupportActionBar();
@@ -79,11 +80,12 @@ public class DetailActivity extends AppCompatActivity {
     public void displayInfo(Film film){
         int[] wxh = getDAWxH(this);
 
-        mBinding.movieTitle.setText(getResources().getString(R.string.title_space,film.getmTitle()));
-        mBinding.movieRelease.setText(getResources().getString(R.string.release,film.getmReleaseDate()));
-        mBinding.movieRating.setText(getResources().getString(R.string.out_of,film.getmVoteAverage()));
-        mBinding.plotSummary.setText(film.getmPlotSummary());
-        mBinding.movieLanguage.setText(getResources().getString(R.string.release,film.getmLanguage()));
+        mBinding.setFilm(film);
+       // mBinding.movieTitle.setText(getResources().getString(R.string.title_space,film.getmTitle()));
+       // mBinding.movieRelease.setText(getResources().getString(R.string.release,film.getmReleaseDate()));
+       // mBinding.movieRating.setText(getResources().getString(R.string.out_of,film.getmVoteAverage()));
+       // mBinding.plotSummary.setText(film.getmPlotSummary());
+       // mBinding.movieLanguage.setText(getResources().getString(R.string.release,film.getmLanguage()));
 
         mBinding.moviePoster.setLayoutParams(new RelativeLayout.LayoutParams(wxh[0], wxh[1]));
         Picasso.with(this).load(film.getmMoviePoster()).into(mBinding.moviePoster);

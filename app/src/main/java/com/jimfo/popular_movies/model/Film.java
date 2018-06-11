@@ -2,48 +2,49 @@ package com.jimfo.popular_movies.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "movies")
 public class Film implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
+    @PrimaryKey @NonNull
     @ColumnInfo(name = "movie_id")
-    private String mId;
+    public String mId = "";
 
     @ColumnInfo(name = "title")
-    private String mTitle;
+    public String mTitle;
 
     @ColumnInfo(name = "release_date")
-    private String mReleaseDate;
+    public String mReleaseDate;
 
     @ColumnInfo(name = "rating")
-    private String mVoteAverage;
+    public String mVoteAverage;
 
     @ColumnInfo(name = "overview")
-    private String mPlotSummary;
+    public String mPlotSummary;
 
     @ColumnInfo(name = "poster")
-    private String mMoviePoster;
+    public String mMoviePoster;
 
     @ColumnInfo(name = "backdrop")
-    private String mBackdrop;
+    public String mBackdrop;
 
     @ColumnInfo(name = "language")
-    private String mLanguage;
+    public String mLanguage;
 
     @ColumnInfo(name = "selection")
-    private String mSelection;
+    public String mSelection;
 
     public Film() {
 
     }
 
-    public Film(String mid, String title, String releaseDate, String voteAverage, String plot,
+    @Ignore
+    public Film(@NonNull String mid, String title, String releaseDate, String voteAverage, String plot,
             String image, String backDrop, String language, String selection) {
         this.mId          = mid;
         this.mTitle       = title;
@@ -56,22 +57,17 @@ public class Film implements Parcelable {
         this.mSelection   = selection;
     }
 
-    public Film(int id, String title, String mid, String releaseDate, String voteAverage, String plot,
-                String image, String backDrop, String language) {
-        this.id = id;
-        this.mTitle = title;
-        this.mId = mid;
-        this.mReleaseDate = releaseDate;
-        this.mVoteAverage = voteAverage;
-        this.mPlotSummary = plot;
-        this.mMoviePoster = image;
-        this.mBackdrop    = backDrop;
-        this.mLanguage    = language;
-    }
-
-    public int getId(){return id;}
-
-    public void setId(int id){ this.id = id;}
+//    public Film(String mid, String title, String releaseDate, String voteAverage, String plot,
+//                String image, String backDrop, String language) {
+//        this.mId          = mid;
+//        this.mTitle       = title;
+//        this.mReleaseDate = releaseDate;
+//        this.mVoteAverage = voteAverage;
+//        this.mPlotSummary = plot;
+//        this.mMoviePoster = image;
+//        this.mBackdrop    = backDrop;
+//        this.mLanguage    = language;
+//    }
 
     public String getmTitle() {
         return mTitle;
@@ -147,7 +143,6 @@ public class Film implements Parcelable {
     // -------------- Parcelable Section -------------- //
 
     protected Film(Parcel in) {
-        id           = in.readInt();
         mTitle       = in.readString();
         mId          = in.readString();
         mReleaseDate = in.readString();
@@ -165,7 +160,6 @@ public class Film implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
         dest.writeString(mTitle);
         dest.writeString(mId);
         dest.writeString(mReleaseDate);

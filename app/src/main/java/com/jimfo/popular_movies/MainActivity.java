@@ -18,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
+import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ItemClickListener, MovieTask.PostExecuteListener {
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private ArrayList<Film> mFilms;
+    private AppDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         mRecyclerView = findViewById(R.id.rv_movies);
         LinearLayout refreshLL = findViewById(R.id.refreshbar_ll);
         refreshLL.setBackgroundColor(getResources().getColor(R.color.ll_color));
+        mDb = AppDatabase.getsInstance(getApplicationContext());
 
         // Layout determined by orientation
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -55,12 +59,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if (isNetworkAvailable()) {
 
             // Default task will be Popular Movies
-            mFilms = new ArrayList<>();
             new MovieTask(this, this).execute(db_call);
             setTitle(ab_title);
         }
         else {
-            closeOnError();
+            mFilms = new ArrayList<>(mDb.movieDao().loadAllMovies());
+            mAdapter = new MovieAdapterRV(this, mFilms);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.setClickListener(this);
         }
     }
 
@@ -154,12 +160,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     @Override
     public void onPostExecute(ArrayList<Film> movies) {
 
+        for(Film film : movies){
+            mDb.movieDao().insertMovies(film);
+        }
+
         this.mFilms = movies;
-
         mAdapter = new MovieAdapterRV(this, movies);
-
         mRecyclerView.setAdapter(mAdapter);
-
         mAdapter.setClickListener(this);
     }
 }
