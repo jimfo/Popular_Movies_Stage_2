@@ -1,21 +1,18 @@
 package com.jimfo.popular_movies.adapter;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jimfo.popular_movies.ItemClickListener;
 import com.jimfo.popular_movies.R;
 import com.jimfo.popular_movies.model.AdjustableImageView;
 import com.jimfo.popular_movies.model.Film;
-import com.jimfo.popular_movies.utils.GeneralUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.jimfo.popular_movies.utils.GeneralUtils.getWxH;
 
@@ -23,19 +20,21 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
 
     private static final String TAG = MovieAdapterRV.class.getSimpleName();
 
-    private ArrayList<Film> mFilms;
+    private List<Film> mFilms;
     private Context mContext;
     private ItemClickListener mListener;
     private LayoutInflater mInflater;
 
     /**
      * Purpose : Constructor
+     *
      * @param context : Context of the calling Activity
-     * @param films   : ArrayList<Film></Film>
+     * @param films   : ArrayList<Film> films
      */
-    public MovieAdapterRV(Context context, ArrayList<Film> films) {
+    public MovieAdapterRV(Context context, ItemClickListener listener, List<Film> films) {
         this.mFilms = films;
         this.mContext = context;
+        this.mListener = listener;
         this.mInflater = LayoutInflater.from(mContext);
     }
 
@@ -48,7 +47,7 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
     /**
      * Purpose : Update the contents of the itemView to reflect the item at the given position.
      *
-     * @param holder : Custom ViewHolder
+     * @param holder   : Custom ViewHolder
      * @param position : Index of the item
      */
     @Override
@@ -65,8 +64,17 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
         return mFilms.size();
     }
 
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mListener = itemClickListener;
+    public List<Film> getMovies() {
+        return mFilms;
+    }
+
+    public void setMovies(List<Film> movies) {
+        mFilms = new ArrayList<>(movies);
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onItemClickListener(int itemId);
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -81,9 +89,8 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
 
         @Override
         public void onClick(View view) {
-            if (mListener != null) {
-                mListener.onClick(view, getAdapterPosition());
-            }
+            int position = getAdapterPosition();
+            mListener.onItemClickListener(position);
         }
     }
 }

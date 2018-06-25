@@ -1,5 +1,6 @@
 package com.jimfo.popular_movies.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -15,14 +16,23 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movies")
-    List<Film> loadAllMovies();
+    LiveData<List<Film>>loadAllMovies();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMovies(Film film);
+    @Query("SELECT * FROM movies")
+    List<Film>loadFavoritedMovies();
+
+    @Query("SELECT count(*) FROM movies WHERE movie_id = :id")
+    int checkIfMovieInTable(String id);
+
+    @Query("SELECT * FROM movies WHERE movie_id = :id")
+    LiveData<Film> loadMovieById(String id);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insertMovie(Film film);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovies(Film film);
+    void updateMovie(Film film);
 
     @Delete
-    void deleteMovies(Film film);
+    int deleteMovie(Film film);
 }

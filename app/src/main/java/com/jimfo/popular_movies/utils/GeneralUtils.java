@@ -16,7 +16,7 @@ public class GeneralUtils {
     public static int getDominantColor(Bitmap bitmap) {
         // https://stackoverflow.com/questions/8471236/finding-the-dominant-color-of-an-image-in-an-android-drawable/28145358
 
-        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), 100, true);
         final int color = newBitmap.getPixel(0, 0);
         newBitmap.recycle();
 
@@ -79,5 +79,14 @@ public class GeneralUtils {
         WxH[3] = (pixels / 2);
 
         return WxH;
+    }
+
+    public static int[] getTrailerWidthAndHiieght(Context context){
+
+        int[] wxh = new int[2];
+        int pixels = getPixels(context);
+        wxh[0] = (int) (pixels * .75);
+        wxh[1] = (int) (pixels * .375);
+        return wxh;
     }
 }

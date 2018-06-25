@@ -10,6 +10,9 @@
     <!-- Strings related to Detail Activity  -->
     <string name="movie_poster">Movie poster image</string>
     <string name="back_drop">Movie back drop image</string>
+    <string name="baseYoutubeUrl">https://www.youtube.com/watch?v=</string>
+    <string name="youtubeImg">http://img.youtube.com/vi/</string>
+    <string name="youtubeIdx">/mqdefault.jpg</string>
     <string name="dna">Data not available</string>
     <string name="release">&#160;&#160;%1$s</string>
     <string name="out_of">&#160;&#160;%1$s/10</string>
@@ -21,9 +24,15 @@
     <string name="reviews">Reviews</string>
     <string name="action_favorite">Add to favorites</string>
     <string name="preferences">my_preferences</string>
+    <string name="update">update</string>
+    <string name="left">Left Button</string>
+    <string name="right">Right Button</string>
 
     <!-- Strings related to TMDB -->
     <string name="baseUrl">http://api.themoviedb.org/3/movie/</string>
+    <string name="trBaseUrl">https://api.themoviedb.org/3/movie/</string>
+    <string name="vids">/videos</string>
+    <string name="revs">/reviews</string>
     <string name="get">GET</string>
     <string name="inputstreamError">Error with creating URL</string>
     <string name="responseCodeError">Error Response Code</string>
@@ -43,6 +52,10 @@
     <string name="parseError">Problem parsing the MOVIE JSON results</string>
     <string name="id">id</string>
     <string name="language">original_language</string>
+    <string name="key">key</string>
+    <string name="author">author</string>
+    <string name="content">content</string>
+    <string name="no_review">No reviews have been submitted for this film</string>
 
     <!-- Strings related to Main Activity -->
     <string name="error_message">Unable to process your request, closing application</string>
@@ -53,8 +66,13 @@
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="favorite_movies">Favorite Movies</string>
+    <string name="favorite">favorite</string>
     <string name="website">
         <a href="http://www.JamesFody.com">JamesFody.com</a>
     </string>
     <string name="updating">Update&#160;&#160;</string>
+    <string name="allMovies">Top Rated and popular Movies</string>
+    <string name="all">all</string>
+    <string name="refresh">refresh</string>
+    <string name="review">review</string>
 </resources>

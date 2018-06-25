@@ -52,8 +52,6 @@
             android:focusable="true"
             android:fontFamily="casual"
             android:textSize="12sp"/>
-        
+
     </LinearLayout>
-
-
 </LinearLayout>

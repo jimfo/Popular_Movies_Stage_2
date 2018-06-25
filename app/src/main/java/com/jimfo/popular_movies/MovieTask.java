@@ -1,13 +1,20 @@
 package com.jimfo.popular_movies;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.util.Log;
 
+import com.jimfo.popular_movies.data.AppDatabase;
+import com.jimfo.popular_movies.data.MovieDao;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.utils.NetworkUtils;
 import com.jimfo.popular_movies.utils.TmdbUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
 
@@ -44,5 +51,4 @@ public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
 
         mPostExecuteListener.onPostExecute(result);
     }
-
 }

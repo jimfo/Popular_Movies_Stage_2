@@ -3,6 +3,7 @@ package com.jimfo.popular_movies.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -36,16 +37,13 @@ public class Film implements Parcelable {
     @ColumnInfo(name = "language")
     public String mLanguage;
 
-    @ColumnInfo(name = "selection")
-    public String mSelection;
-
     public Film() {
 
     }
 
     @Ignore
     public Film(@NonNull String mid, String title, String releaseDate, String voteAverage, String plot,
-            String image, String backDrop, String language, String selection) {
+            String image, String backDrop, String language) {
         this.mId          = mid;
         this.mTitle       = title;
         this.mReleaseDate = releaseDate;
@@ -54,20 +52,7 @@ public class Film implements Parcelable {
         this.mMoviePoster = image;
         this.mBackdrop    = backDrop;
         this.mLanguage    = language;
-        this.mSelection   = selection;
     }
-
-//    public Film(String mid, String title, String releaseDate, String voteAverage, String plot,
-//                String image, String backDrop, String language) {
-//        this.mId          = mid;
-//        this.mTitle       = title;
-//        this.mReleaseDate = releaseDate;
-//        this.mVoteAverage = voteAverage;
-//        this.mPlotSummary = plot;
-//        this.mMoviePoster = image;
-//        this.mBackdrop    = backDrop;
-//        this.mLanguage    = language;
-//    }
 
     public String getmTitle() {
         return mTitle;
@@ -129,12 +114,6 @@ public class Film implements Parcelable {
 
     public void setmLanguage(String lang) { this.mLanguage = lang; }
 
-    public String getmSelection() { return mSelection; }
-
-    public void setmSelection(String selection) {
-        this.mSelection = selection;
-    }
-
     @Override
     public String toString() {
         return "TITLE : " + getmTitle();
@@ -143,8 +122,8 @@ public class Film implements Parcelable {
     // -------------- Parcelable Section -------------- //
 
     protected Film(Parcel in) {
-        mTitle       = in.readString();
         mId          = in.readString();
+        mTitle       = in.readString();
         mReleaseDate = in.readString();
         mVoteAverage = in.readString();
         mPlotSummary = in.readString();
@@ -160,8 +139,8 @@ public class Film implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mTitle);
         dest.writeString(mId);
+        dest.writeString(mTitle);
         dest.writeString(mReleaseDate);
         dest.writeString(mVoteAverage);
         dest.writeString(mPlotSummary);

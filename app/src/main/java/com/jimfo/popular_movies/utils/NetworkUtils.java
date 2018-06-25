@@ -1,11 +1,15 @@
 package com.jimfo.popular_movies.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.jimfo.popular_movies.BuildConfig;
 import com.jimfo.popular_movies.R;
 import com.jimfo.popular_movies.model.Film;
+import com.jimfo.popular_movies.model.Review;
+import com.jimfo.popular_movies.model.Trailer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +43,44 @@ public class NetworkUtils {
         }
 
         return TmdbUtils.extractMovieData(context, jsonResponse, request);
+    }
+
+    public static ArrayList<Review> fetchReviews(Context context, String id){
+
+        URL reviewURL = createUrl(context, context.getString(R.string.baseUrl) + id +
+                context.getString(R.string.revs) + "?api_key=" + KEY);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonReviewResponse = null;
+
+        try {
+            jsonReviewResponse = makeHttpRequest(context, reviewURL);
+        }
+        catch (IOException e) {
+            Log.e(TAG, context.getString(R.string.inputstreamError), e);
+        }
+
+        return TmdbUtils.extractReviewData(context, jsonReviewResponse, id);
+    }
+
+    public static ArrayList<Trailer> fetchTrailers(Context context, String id){
+
+        URL trailerURL = createUrl(context, context.getString(R.string.baseUrl) + id +
+                        context.getString(R.string.vids) + "?api_key=" + KEY);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonTrailerResponse = null;
+
+        try {
+             jsonTrailerResponse = makeHttpRequest(context, trailerURL);
+             Log.i(TAG, jsonTrailerResponse);
+
+        }
+        catch (IOException e) {
+            Log.e(TAG, context.getString(R.string.inputstreamError), e);
+        }
+
+        return TmdbUtils.extractTrailerData(context, jsonTrailerResponse, id);
     }
 
     /**
@@ -120,5 +162,23 @@ public class NetworkUtils {
         }
 
         return output.toString();
+    }
+
+    /**
+     * Purpose : Method to check for network connectivity
+     * @return : boolean
+     */
+    public static boolean isNetworkAvailable(Context context) {
+
+        ConnectivityManager connectivityMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo;
+
+        if (connectivityMgr != null) {
+            networkInfo = connectivityMgr.getActiveNetworkInfo();
+
+            // if no network is available networkInfo will be null
+            return (networkInfo != null && networkInfo.isConnected());
+        }
+        return false;
     }
 }

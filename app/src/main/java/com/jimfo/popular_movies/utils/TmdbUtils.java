@@ -7,20 +7,15 @@ import android.widget.Toast;
 
 import com.jimfo.popular_movies.BuildConfig;
 import com.jimfo.popular_movies.R;
+import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
+import com.jimfo.popular_movies.model.Review;
+import com.jimfo.popular_movies.model.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class TmdbUtils {
@@ -31,11 +26,12 @@ public class TmdbUtils {
     // Answered by SANAT
     private static final String KEY = BuildConfig.TmdbSecAPIKey;
 
-
     private TmdbUtils() {
     }
 
     public static ArrayList<Film> extractMovieData(Context context, String response, String request) {
+
+        AppDatabase mDb = AppDatabase.getsInstance(context);
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(response)) {
@@ -78,12 +74,19 @@ public class TmdbUtils {
                             rating       = jo.optString(context.getString(R.string.voteAverage), context.getString(R.string.dna));
                             overview     = jo.optString(context.getString(R.string.overview), context.getString(R.string.dna));
                             posterPath   = context.getString(R.string.path) + jo.optString(context.getString(R.string.posterPath), context.getString(R.string.dna));
-                            backdropPath = context.getString(R.string.path) + jo.optString(context.getString(R.string.backDrop), context.getString(R.string.dna));
                             language     = jo.optString(context.getString(R.string.language), context.getString(R.string.dna));
 
-                            film = new Film(id,title,releaseDate,rating,overview,posterPath,backdropPath,language,request);
+                            if (jo.optString(context.getString(R.string.backDrop), context.getString(R.string.dna)).equals("null")){
+                                backdropPath = null;
+                            }
+                            else{
+                                backdropPath = context.getString(R.string.path) + jo.optString(context.getString(R.string.backDrop), context.getString(R.string.dna));
+                            }
+
+                            film = new Film(id,title,releaseDate,rating,overview,posterPath,backdropPath,language);
                             films.add(film);
                         }
+
                     }
                 }
             }
@@ -99,5 +102,86 @@ public class TmdbUtils {
             Log.e(TAG, context.getString(R.string.parseError), e);
         }
         return films;
+    }
+
+    public static ArrayList<Trailer> extractTrailerData(Context context, String response, String movieId){
+
+        if (TextUtils.isEmpty(response)) {
+            return null;
+        }
+
+        ArrayList<Trailer> trailers = new ArrayList<>();
+        Trailer trailer;
+        String trailer_id;
+        String key;
+
+        try{
+            JSONObject jsonObj = new JSONObject(response);
+
+            if (jsonObj.has(context.getString(R.string.results))) {
+                JSONArray trailerResults = jsonObj.optJSONArray(context.getString(R.string.results));
+
+                if (trailerResults != null) {
+                    //Log.i(TAG, trailerResults.toString());
+                    for (int i = 0; i < trailerResults.length(); i++) {
+                        JSONObject jo = trailerResults.getJSONObject(i);
+
+                        trailer_id = jo.optString(context.getString(R.string.id), context.getString(R.string.dna));
+                        key        = jo.optString(context.getString(R.string.key), context.getString(R.string.dna));
+                        trailer = new Trailer(trailer_id, movieId, key);
+                        trailers.add(trailer);
+                    }
+                }
+            }
+        }
+        catch(JSONException e){
+            Log.e(TAG, context.getString(R.string.parseError), e);
+        }
+        return trailers;
+    }
+
+    public static ArrayList<Review> extractReviewData(Context context, String response, String movieId){
+
+        if (TextUtils.isEmpty(response)) {
+            return null;
+        }
+        ArrayList<Review> reviews = new ArrayList<>();
+        Review review;
+        String review_id;
+        String name;
+        String content;
+
+        try{
+            JSONObject jsonObj = new JSONObject(response);
+
+            if (jsonObj.has(context.getString(R.string.results))) {
+                JSONArray reviewResults = jsonObj.optJSONArray(context.getString(R.string.results));
+
+                if (reviewResults != null) {
+
+                    if(reviewResults.length() > 0) {
+                        for (int i = 0; i < reviewResults.length(); i++) {
+                            JSONObject jo = reviewResults.getJSONObject(i);
+
+                            review_id = jo.optString(context.getString(R.string.id), context.getString(R.string.dna));
+                            name = jo.optString(context.getString(R.string.author), context.getString(R.string.dna));
+                            content = jo.optString(context.getString(R.string.content), context.getString(R.string.dna));
+                            review = new Review(review_id, movieId, name, content);
+                            reviews.add(review);
+                        }
+                    }
+                    else{
+
+                        content = context.getString(R.string.no_review);
+                        review = new Review(movieId, content);
+                        reviews.add(review);
+                    }
+                }
+            }
+        }
+        catch(JSONException e){
+            Log.e(TAG, context.getString(R.string.parseError), e);
+        }
+        return reviews;
     }
 }

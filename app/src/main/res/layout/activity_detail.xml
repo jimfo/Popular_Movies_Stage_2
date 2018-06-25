@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="film" type="com.jimfo.popular_movies.model.Film"/>
     </data>
@@ -30,9 +31,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-
+                    android:src="@drawable/ic_action_name"
                     android:contentDescription="@string/back_drop"
                     android:scaleType="fitXY"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -114,7 +116,7 @@
                     android:drawableLeft="@drawable/ic_language_black_24dp"
                     android:drawableStart="@drawable/ic_language_black_24dp"
                     android:gravity="center|start"
-                    android:text="@{film.mReleaseDate}"/>
+                    android:text="@{film.mLanguage}"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -134,39 +136,117 @@
                     android:paddingStart="@dimen/standardPadding"
                     android:text="@{film.mPlotSummary}"/>
 
-                <Button
-                    android:id="@+id/trailersBtn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/standardPadding"
-                    android:layout_marginEnd="@dimen/standardPadding"
-                    android:layout_marginLeft="@dimen/standardPadding"
-                    android:layout_marginRight="@dimen/standardPadding"
-                    android:layout_marginStart="@dimen/standardPadding"
-                    android:text="@string/trailers"
-                    android:textColor="@color/detail_activity_btn"/>
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/standardPadding"
+                    android:paddingEnd="@dimen/standardPadding"
+                    android:paddingLeft="@dimen/standardPadding"
+                    android:paddingRight="@dimen/standardPadding"
+                    android:paddingStart="@dimen/standardPadding">
 
-                <HorizontalScrollView
-                    android:id="@+id/trailer_hsv"
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/leftTrailerBtn"
+                        android:layout_weight="2"
+                        android:onClick="onTrailerChange"
+                        android:contentDescription="@string/left"
+                        android:src="@drawable/ic_chevron_left_black_24dp"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/trailer_label"
+                        android:text="@string/trailers"
+                        android:gravity="center"
+                        android:onClick="removeWidget"
+                        android:textColor="@color/detail_activity_btn"
+                        android:textSize="20sp"
+                        android:layout_weight="6"
+                        android:layout_marginEnd="@dimen/tv_paddingBottom"
+                        android:layout_marginLeft="@dimen/tv_paddingBottom"
+                        android:layout_marginRight="@dimen/tv_paddingBottom"
+                        android:layout_marginStart="@dimen/tv_paddingBottom"/>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rightTrailerBtn"
+                        android:layout_weight="2"
+                        android:onClick="onTrailerChange"
+                        android:contentDescription="@string/right"
+                        android:src="@drawable/ic_chevron_right_white_24dp"/>
+
+                </LinearLayout>
+
+                <com.jimfo.popular_movies.model.AdjustableImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"
+                    android:id="@+id/trailer_iv"
+                    android:onClick="playVideo"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:contentDescription="@string/trailers"
+                    android:paddingBottom="@dimen/standardPadding"
+                    android:paddingEnd="@dimen/standardPadding"
+                    android:paddingLeft="@dimen/standardPadding"
+                    android:paddingRight="@dimen/standardPadding"
+                    android:paddingStart="@dimen/standardPadding"/>
 
-                <Button
-                    android:id="@+id/reviewsBtn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/standardPadding"
-                    android:layout_marginEnd="@dimen/standardPadding"
-                    android:layout_marginLeft="@dimen/standardPadding"
-                    android:layout_marginRight="@dimen/standardPadding"
-                    android:layout_marginStart="@dimen/standardPadding"
-                    android:text="@string/reviews"
-                    android:textColor="@color/detail_activity_btn"/>
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/standardPadding"
+                    android:paddingEnd="@dimen/standardPadding"
+                    android:paddingLeft="@dimen/standardPadding"
+                    android:paddingRight="@dimen/standardPadding"
+                    android:paddingStart="@dimen/standardPadding">
 
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/leftBtn"
+                        android:layout_weight="2"
+                        android:onClick="onReviewChange"
+                        android:contentDescription="@string/left"
+                        android:src="@drawable/ic_chevron_left_black_24dp"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/review_label"
+                        android:text="@string/reviews"
+                        android:gravity="center"
+                        android:onClick="removeWidget"
+                        android:textColor="@color/detail_activity_btn"
+                        android:textSize="20sp"
+                        android:layout_weight="6"
+                        android:layout_marginEnd="@dimen/tv_paddingBottom"
+                        android:layout_marginLeft="@dimen/tv_paddingBottom"
+                        android:layout_marginRight="@dimen/tv_paddingBottom"
+                        android:layout_marginStart="@dimen/tv_paddingBottom"/>
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rightBtn"
+                        android:layout_weight="2"
+                        android:onClick="onReviewChange"
+                        android:contentDescription="@string/right"
+                        android:src="@drawable/ic_chevron_right_white_24dp"/>
+
+                </LinearLayout>
                 <TextView
-                    android:id="@+id/reviews_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/review_tv"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/standardPadding"
+                    android:paddingEnd="@dimen/standardPadding"
+                    android:paddingLeft="@dimen/standardPadding"
+                    android:paddingRight="@dimen/standardPadding"
+                    android:paddingStart="@dimen/standardPadding"/>
+
 
             </LinearLayout>
 
