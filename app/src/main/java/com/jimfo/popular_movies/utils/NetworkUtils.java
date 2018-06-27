@@ -73,7 +73,6 @@ public class NetworkUtils {
 
         try {
              jsonTrailerResponse = makeHttpRequest(context, trailerURL);
-             Log.i(TAG, jsonTrailerResponse);
 
         }
         catch (IOException e) {
@@ -137,7 +136,6 @@ public class NetworkUtils {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
-                // TODO function must handle java.io.IOException here
                 inputStream.close();
             }
         }

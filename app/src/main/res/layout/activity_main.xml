@@ -15,6 +15,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/ll_color"/>
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/empty"
+            android:gravity="center"
+            android:background="@color/ll_color"
+            android:textColor="@color/detail_activity_btn"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <LinearLayout

@@ -18,8 +18,8 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(Application application) {
         super(application);
+
         AppDatabase mDb = AppDatabase.getsInstance(application);
-        Log.i(TAG, "CALL TO DB");
         films = mDb.movieDao().loadAllMovies();
     }
 

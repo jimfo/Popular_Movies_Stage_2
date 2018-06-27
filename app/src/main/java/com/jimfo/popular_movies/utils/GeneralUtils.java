@@ -81,7 +81,7 @@ public class GeneralUtils {
         return WxH;
     }
 
-    public static int[] getTrailerWidthAndHiieght(Context context){
+    public static int[] getTrailerWidthAndHieght(Context context){
 
         int[] wxh = new int[2];
         int pixels = getPixels(context);

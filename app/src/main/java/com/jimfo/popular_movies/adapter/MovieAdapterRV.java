@@ -1,10 +1,12 @@
 package com.jimfo.popular_movies.adapter;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.jimfo.popular_movies.R;
 import com.jimfo.popular_movies.model.AdjustableImageView;
@@ -51,12 +53,16 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
      * @param position : Index of the item
      */
     @Override
-    public void onBindViewHolder(MovieAdapterRV.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(final MovieAdapterRV.CustomViewHolder holder, final int position) {
+
         Film film = mFilms.get(position);
         int[] wxh = getWxH(mContext);
 
         holder.aiv.setLayoutParams(new RecyclerView.LayoutParams(wxh[0], wxh[1]));
+
         Picasso.with(mContext).load(film.getmMoviePoster()).into(holder.aiv);
+
+        ViewCompat.setTransitionName(holder.aiv, ViewCompat.getTransitionName(holder.aiv));
     }
 
     @Override
@@ -74,7 +80,7 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
     }
 
     public interface ItemClickListener {
-        void onItemClickListener(int itemId);
+        void onItemClickListener(int itemId, ImageView iv);
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -90,7 +96,7 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            mListener.onItemClickListener(position);
+            mListener.onItemClickListener(position, aiv);
         }
     }
 }

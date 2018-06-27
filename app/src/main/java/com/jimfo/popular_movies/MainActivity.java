@@ -1,23 +1,33 @@
 package com.jimfo.popular_movies;
 
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
 import com.jimfo.popular_movies.data.AppDatabase;
@@ -30,18 +40,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MovieAdapterRV.ItemClickListener,
         MovieTask.PostExecuteListener {
 
-    // The code for ItemClickListener came from https://piercezaifman.com/click-listener-for-recyclerview-adapter/
-    // by Pierce Zaifman
-
     private static final String TAG = MainActivity.class.getSimpleName();
+    private final String SAVED_STATE = "state";
 
-    private AppDatabase mDb;
     private String ab_title;
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private List<Film> mFilms;
-    private String lastcall = "popular";
-    private static int currentVisiblePosition = 0;
+    private TextView emptyTV;
+    Parcelable recyclerviewState;
+    RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -49,15 +57,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null){
-            lastcall = savedInstanceState.getString(getResources().getString(R.string.movieKey));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            View decor = getWindow().getDecorView();
+            fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
+            fade.excludeTarget(android.R.id.statusBarBackground, true);
+            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+            getWindow().setEnterTransition(fade);
+            getWindow().setExitTransition(fade);
         }
 
         mRecyclerView = findViewById(R.id.rv_movies);
         LinearLayout refreshLL = findViewById(R.id.refreshbar_ll);
         refreshLL.setBackgroundColor(getResources().getColor(R.color.ll_color));
-        mDb = AppDatabase.getsInstance(getApplicationContext());
         ab_title = getResources().getString(R.string.popular_movies);
+        emptyTV = findViewById(R.id.empty_view);
 
         // Layout determined by orientation
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -71,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             // if db is empty check if network is available and get movies from TMDB
             new MovieTask(this, this).execute(getResources().getString(R.string.popular));
             setTitle(getResources().getString(R.string.popular_movies));
-            lastcall = getResources().getString(R.string.popular);
         }
         else{
             setupViewModel();
@@ -79,18 +93,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
 
-        currentVisiblePosition = 0;
-        currentVisiblePosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+        recyclerviewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        state.putParcelable(SAVED_STATE, recyclerviewState);
     }
 
     @Override
-    public void onResume(){
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+
+        if(state != null)
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(state);
+    }
+
+    @Override
+    protected void onResume() {
         super.onResume();
 
-        getMovies(lastcall);
+        if (recyclerviewState != null) {
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerviewState);
+        }
     }
 
     /**
@@ -117,19 +141,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         switch (item.getItemId()) {
             case R.id.top_rated:
                 ab_title = this.getResources().getString(R.string.top_rated_movies);
-                lastcall = getResources().getString(R.string.top_rated);
                 getMovies(this.getResources().getString(R.string.top_rated));
                 return true;
 
             case R.id.popular_movies:
                 ab_title = this.getResources().getString(R.string.popular_movies);
-                lastcall = getResources().getString(R.string.popular);
                 getMovies(this.getResources().getString(R.string.popular));
                 return true;
 
             case R.id.my_favorites:
                 setTitle(this.getResources().getString(R.string.favorite_movies));
-                lastcall = getResources().getString(R.string.favorite);
                 getMovies(this.getResources().getString(R.string.favorite));
                 return true;
 
@@ -137,14 +158,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-        savedInstanceState.putString(getResources().getString(R.string.movieKey), lastcall);
-    }
-
 
     /**
      * Purpose : Setup Asynctask call with appropriate parameter
@@ -188,10 +201,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
      * @param itemId : Position of movie clicked in arraylist
      */
     @Override
-    public void onItemClickListener(int itemId) {
+    public void onItemClickListener(int itemId, ImageView imageview) {
 
-        final String MOVIE = "movie";
-
+        final String MOVIE = getResources().getString(R.string.movieKey);
         Film movie = mFilms.get(itemId);
 
         if (movie != null) {
@@ -199,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             i.putExtra(MOVIE, movie);
             startActivity(i);
         }
-
     }
 
 
@@ -211,8 +222,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         mRecyclerView.setAdapter(mAdapter);
         setTitle(ab_title);
 
-        (mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
-        currentVisiblePosition = 0;
+     //   (mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+     //   currentVisiblePosition = 0;
     }
 
     private void setupViewModel(){
@@ -220,15 +231,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         viewModel.getMovies().observe(this, new Observer<List<Film>>() {
             @Override
             public void onChanged(@Nullable List<Film> films) {
-                if(null == films){
+
+                if(null == films || films.size() == 0){
                     mFilms = new ArrayList<>();
                 }
                 else{
                     mFilms = films;
                 }
+
+                displayAppropriateView();
                 mAdapter.setMovies(mFilms);
             }
         });
+    }
+
+    public void displayAppropriateView(){
+        if(null == mFilms || mFilms.size() == 0) {
+            mRecyclerView.setVisibility(View.GONE);
+            emptyTV.setVisibility(View.VISIBLE);
+        }
+        else{
+
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyTV.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -240,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
     public void onPostExecute(ArrayList<Film> movies) {
 
         this.mFilms = movies;
+        displayAppropriateView();
         updateAdapter();
     }
 }

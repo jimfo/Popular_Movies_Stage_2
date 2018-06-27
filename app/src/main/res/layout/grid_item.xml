@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     android:background="@drawable/image_view_border"
     android:padding="@dimen/tv_paddingBottom"
+    android:transitionName="transition"
     android:adjustViewBounds="true"/>

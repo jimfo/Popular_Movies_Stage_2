@@ -1,22 +1,24 @@
 package com.jimfo.popular_movies;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
-import android.graphics.Movie;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.databinding.ActivityDetailBinding;
@@ -40,13 +43,15 @@ import com.jimfo.popular_movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.text.TextUtils.TruncateAt.MARQUEE;
 import static com.jimfo.popular_movies.utils.GeneralUtils.getDAWxH;
-import static com.jimfo.popular_movies.utils.GeneralUtils.getTrailerWidthAndHiieght;
+import static com.jimfo.popular_movies.utils.GeneralUtils.getTrailerWidthAndHieght;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity{
     //implements MovieTask.PostExecuteListener
     private static final String TAG = DetailActivity.class.getSimpleName();
 
@@ -58,6 +63,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView reviewTV;
     private ImageView trailerIV;
     private Context mContext;
+    private ImageView imageview;
 
     private int reviewPosition = 0;
     private int trailerPosition = 0;
@@ -74,16 +80,11 @@ public class DetailActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         reviewTV = findViewById(R.id.review_tv);
         trailerIV = findViewById(R.id.trailer_iv);
+        imageview = findViewById(R.id.moviePoster);
         mContext = getApplicationContext();
         youtubeURL = this.getString(R.string.baseYoutubeUrl);
         youtubeFront = this.getString(R.string.youtubeImg);
         youtubeBack = this.getString(R.string.youtubeIdx);
-
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         // Get info from intent
         Intent i = getIntent();
@@ -162,8 +163,24 @@ public class DetailActivity extends AppCompatActivity {
         mBinding.moviePoster.setLayoutParams(new RelativeLayout.LayoutParams(wxh[0], wxh[1]));
         Picasso.with(this).load(film.getmMoviePoster()).into(mBinding.moviePoster);
 
-        loadImage(film.getmBackdrop());
+        if (null != film.getmBackdrop()) {
+            loadImage(film.getmBackdrop());
+        }
+        else {
+            setColors(R.color.colorPrimaryDark);
+        }
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            View decor = getWindow().getDecorView();
+            fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
+            fade.excludeTarget(android.R.id.statusBarBackground, true);
+            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+            getWindow().setEnterTransition(fade);
+            getWindow().setExitTransition(fade);
+        }
         setTitle(film.getmTitle());
     }
 
@@ -284,27 +301,32 @@ public class DetailActivity extends AppCompatActivity {
 
         trailerIV.setVisibility(View.VISIBLE);
 
-        int[] wxh = getTrailerWidthAndHiieght(mContext);
+        int[] wxh = getTrailerWidthAndHieght(mContext);
 
         LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(wxh[0],wxh[1]);
         layoutParams.gravity= Gravity.CENTER;
         trailerIV.setLayoutParams(layoutParams);
 
-        switch (v.getId()) {
+        if(mTrailers.size() != 0) {
+            switch (v.getId()) {
 
-            case R.id.leftTrailerBtn:
-                trailerPosition--;
-                trailerPosition = setPosition(trailerPosition, mTrailers.size());
-                Picasso.with(this).load(youtubeFront + mTrailers.get(trailerPosition).getmKey() + youtubeBack)
-                        .into(trailerIV);
+                case R.id.leftTrailerBtn:
+                    trailerPosition--;
+                    trailerPosition = setPosition(trailerPosition, mTrailers.size());
+                    Picasso.with(this).load(youtubeFront + mTrailers.get(trailerPosition).getmKey() + youtubeBack)
+                            .into(trailerIV);
 
-                break;
-            case R.id.rightTrailerBtn:
-                trailerPosition++;
-                trailerPosition = setPosition(trailerPosition, mTrailers.size());
-                Picasso.with(this).load(youtubeFront + mTrailers.get(trailerPosition).getmKey() + youtubeBack)
-                        .into(trailerIV);
-                break;
+                    break;
+                case R.id.rightTrailerBtn:
+                    trailerPosition++;
+                    trailerPosition = setPosition(trailerPosition, mTrailers.size());
+                    Picasso.with(this).load(youtubeFront + mTrailers.get(trailerPosition).getmKey() + youtubeBack)
+                            .into(trailerIV);
+                    break;
+            }
+        }
+        else{
+            Toast.makeText(this, "No Trailers Available", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -341,15 +363,14 @@ public class DetailActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
             case R.id.action_favorite:
                 mSaved = !mSaved;
                 updateDb(mSaved);
                 return true;
-            default:
+
+            default: {
                 return super.onOptionsItemSelected(item);
+            }
         }
     }
 }
