@@ -72,6 +72,9 @@ stored using Room.
 
 - [x] If Room is used, database is not re-queried unnecessarily after rotation. Cached LiveData from ViewModel is used instead.
 
+
+#### First Activity
+Popular Movies is chosen
 ![1](https://user-images.githubusercontent.com/5784029/41992640-0d8ba4ce-7a17-11e8-929e-55f459809f9b.png)
 
 ![3](https://user-images.githubusercontent.com/5784029/41992645-11ebea9c-7a17-11e8-8b74-fa8f005b8a14.png)
