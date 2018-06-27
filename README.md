@@ -77,7 +77,7 @@ stored using Room.
 Popular Movies is chosen
 
 <p align="center">
-![1](https://user-images.githubusercontent.com/5784029/41992640-0d8ba4ce-7a17-11e8-929e-55f459809f9b.png)
+<img src='![1](https://user-images.githubusercontent.com/5784029/41992640-0d8ba4ce-7a17-11e8-929e-55f459809f9b.png)'/>
 </p>
 ![3](https://user-images.githubusercontent.com/5784029/41992645-11ebea9c-7a17-11e8-8b74-fa8f005b8a14.png)
 ![4](https://user-images.githubusercontent.com/5784029/41992649-1422dc58-7a17-11e8-929c-cd174ae5d4b1.png)
