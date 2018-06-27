@@ -24,14 +24,14 @@ You did an amazing work here and I can see that you are able to implement the co
 
 Best!
 
-## Common Project Requirements
+### Common Project Requirements
 App is written solely in the Java Programming Language.
 
 App conforms to common standards found in the Android Nanodegree General Project Guidelines.
 
 App utilizes stable release versions of all libraries, Gradle, and Android Studio.
 
-## User Interface - Layout
+### User Interface - Layout
 UI contains an element (e.g., a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
 
 Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
