@@ -25,7 +25,7 @@ You did an amazing work here and I can see that you are able to implement the co
 Best!
 
 ### Common Project Requirements
--[x] App is written solely in the Java Programming Language.
+- [x] App is written solely in the Java Programming Language.
 
 App conforms to common standards found in the Android Nanodegree General Project Guidelines.
 
