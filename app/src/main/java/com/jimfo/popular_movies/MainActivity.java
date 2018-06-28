@@ -209,7 +209,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         if (movie != null) {
             Intent i = new Intent(this, DetailActivity.class);
             i.putExtra(MOVIE, movie);
-            startActivity(i);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, imageview, ViewCompat.getTransitionName(imageview));
+            startActivity(i, options.toBundle());
         }
     }
 

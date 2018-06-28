@@ -85,8 +85,8 @@ public class GeneralUtils {
 
         int[] wxh = new int[2];
         int pixels = getPixels(context);
-        wxh[0] = (int) (pixels * .75);
-        wxh[1] = (int) (pixels * .375);
+        wxh[0] = (int) (pixels);
+        wxh[1] = (int) (pixels * .5);
         return wxh;
     }
 }
