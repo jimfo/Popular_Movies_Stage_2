@@ -10,6 +10,7 @@ public class GeneralUtils {
 
     /**
      * Purpose : To get the dominant color from an image and darken color.
+     *
      * @param bitmap : Backdrop poster image
      * @return : color
      */
@@ -29,11 +30,10 @@ public class GeneralUtils {
     }
 
     /**
-     *
      * @param context : The context of the calling Activity
      * @return : int
      */
-    private static int getPixels(Context context){
+    private static int getPixels(Context context) {
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int width = (int) (displayMetrics.widthPixels / displayMetrics.density);
@@ -43,10 +43,11 @@ public class GeneralUtils {
 
     /**
      * Purpose : To set the height and width of an image based on orientation
+     *
      * @param context : The context of the calling Activity
      * @return : An int array
      */
-    public static int[] getWxH(Context context){
+    public static int[] getWxH(Context context) {
 
         int[] wxh = new int[2];
 
@@ -55,8 +56,7 @@ public class GeneralUtils {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             wxh[0] = (pixels / 2);
             wxh[1] = (int) ((pixels / 2) * 1.5f);
-        }
-        else {
+        } else {
             wxh[0] = (pixels / 3);
             wxh[1] = (int) ((pixels / 3) * 1.5f);
         }
@@ -65,10 +65,11 @@ public class GeneralUtils {
 
     /**
      * Purpose : To set the height and width of the movie poster image and backdrop poster image
+     *
      * @param context : The context of the calling Activity
      * @return : An int array
      */
-    public static int[] getDAWxH(Context context){
+    public static int[] getDAWxH(Context context) {
 
         int[] WxH = new int[4];
 
@@ -81,7 +82,7 @@ public class GeneralUtils {
         return WxH;
     }
 
-    public static int[] getTrailerWidthAndHieght(Context context){
+    public static int[] getTrailerWidthAndHieght(Context context) {
 
         int[] wxh = new int[2];
         int pixels = getPixels(context);

@@ -27,7 +27,8 @@ public class AppExecutors {
             synchronized (LOCK) {
                 sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
                         Executors.newFixedThreadPool(3),
-                        new MainThreadExecutor());
+                        new MainThreadExecutor()
+                );
             }
         }
         return sInstance;

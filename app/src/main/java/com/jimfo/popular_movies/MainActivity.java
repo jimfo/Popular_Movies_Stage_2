@@ -1,26 +1,19 @@
 package com.jimfo.popular_movies;
 
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
-import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.utils.NetworkUtils;
 
@@ -86,8 +78,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             // if db is empty check if network is available and get movies from TMDB
             new MovieTask(this, this).execute(getResources().getString(R.string.popular));
             setTitle(getResources().getString(R.string.popular_movies));
-        }
-        else{
+        } else {
             setupViewModel();
         }
     }
@@ -104,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
 
-        if(state != null)
+        if (state != null)
             mRecyclerView.getLayoutManager().onRestoreInstanceState(state);
     }
 
@@ -219,24 +210,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
      * Purpose : Updates the adapter with the appropriate movie list
      */
     public void updateAdapter() {
+
         mAdapter = new MovieAdapterRV(this, this, mFilms);
         mRecyclerView.setAdapter(mAdapter);
         setTitle(ab_title);
-
-     //   (mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
-     //   currentVisiblePosition = 0;
     }
 
-    private void setupViewModel(){
+    private void setupViewModel() {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getMovies().observe(this, new Observer<List<Film>>() {
             @Override
             public void onChanged(@Nullable List<Film> films) {
 
-                if(null == films || films.size() == 0){
+                if (null == films || films.size() == 0) {
                     mFilms = new ArrayList<>();
-                }
-                else{
+                } else {
                     mFilms = films;
                 }
 
@@ -246,12 +234,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         });
     }
 
-    public void displayAppropriateView(){
-        if(null == mFilms || mFilms.size() == 0) {
+    public void displayAppropriateView() {
+        if (null == mFilms || mFilms.size() == 0) {
             mRecyclerView.setVisibility(View.GONE);
             emptyTV.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
 
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyTV.setVisibility(View.GONE);

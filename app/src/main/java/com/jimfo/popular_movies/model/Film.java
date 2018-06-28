@@ -3,7 +3,6 @@ package com.jimfo.popular_movies.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -12,7 +11,8 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "movies")
 public class Film implements Parcelable {
 
-    @PrimaryKey @NonNull
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "movie_id")
     public String mId = "";
 
@@ -44,14 +44,14 @@ public class Film implements Parcelable {
     @Ignore
     public Film(@NonNull String mid, String title, String releaseDate, String voteAverage, String plot,
             String image, String backDrop, String language) {
-        this.mId          = mid;
-        this.mTitle       = title;
+        this.mId = mid;
+        this.mTitle = title;
         this.mReleaseDate = releaseDate;
         this.mVoteAverage = voteAverage;
         this.mPlotSummary = plot;
         this.mMoviePoster = image;
-        this.mBackdrop    = backDrop;
-        this.mLanguage    = language;
+        this.mBackdrop = backDrop;
+        this.mLanguage = language;
     }
 
     public String getmTitle() {
@@ -110,9 +110,13 @@ public class Film implements Parcelable {
         this.mBackdrop = mBackdrop;
     }
 
-    public String getmLanguage() {return mLanguage; }
+    public String getmLanguage() {
+        return mLanguage;
+    }
 
-    public void setmLanguage(String lang) { this.mLanguage = lang; }
+    public void setmLanguage(String lang) {
+        this.mLanguage = lang;
+    }
 
     @Override
     public String toString() {
@@ -122,14 +126,14 @@ public class Film implements Parcelable {
     // -------------- Parcelable Section -------------- //
 
     protected Film(Parcel in) {
-        mId          = in.readString();
-        mTitle       = in.readString();
+        mId = in.readString();
+        mTitle = in.readString();
         mReleaseDate = in.readString();
         mVoteAverage = in.readString();
         mPlotSummary = in.readString();
         mMoviePoster = in.readString();
-        mBackdrop    = in.readString();
-        mLanguage    = in.readString();
+        mBackdrop = in.readString();
+        mLanguage = in.readString();
     }
 
     @Override

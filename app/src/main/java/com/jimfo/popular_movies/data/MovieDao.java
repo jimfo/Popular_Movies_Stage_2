@@ -16,10 +16,10 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movies")
-    LiveData<List<Film>>loadAllMovies();
+    LiveData<List<Film>> loadAllMovies();
 
     @Query("SELECT * FROM movies")
-    List<Film>loadFavoritedMovies();
+    List<Film> loadFavoritedMovies();
 
     @Query("SELECT count(*) FROM movies WHERE movie_id = :id")
     int checkIfMovieInTable(String id);

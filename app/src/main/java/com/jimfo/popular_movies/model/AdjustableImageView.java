@@ -51,8 +51,7 @@ public class AdjustableImageView extends android.support.v7.widget.AppCompatImag
                     setMeasuredDimension(width, height);
                 else
                     setMeasuredDimension(Math.min(width, widthSize), Math.min(height, heightSize));
-            }
-            else if (widthMode == MeasureSpec.EXACTLY && heightMode != MeasureSpec.EXACTLY) {
+            } else if (widthMode == MeasureSpec.EXACTLY && heightMode != MeasureSpec.EXACTLY) {
                 // Fixed Width & Adjustable Height
                 int width = widthSize;
                 int height = width * mDrawableHeight / mDrawableWidth;
@@ -60,12 +59,10 @@ public class AdjustableImageView extends android.support.v7.widget.AppCompatImag
                     setMeasuredDimension(width, height);
                 else
                     setMeasuredDimension(Math.min(width, widthSize), Math.min(height, heightSize));
-            }
-            else {
+            } else {
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
-        }
-        else {
+        } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }

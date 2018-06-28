@@ -16,12 +16,13 @@ public abstract class AppDatabase extends RoomDatabase {
     private static String DATABASE_NAME = "movies_db";
     private static AppDatabase sInstance;
 
-    public static AppDatabase getsInstance(Context context){
-        if (sInstance == null){
-            synchronized (LOCK){
+    public static AppDatabase getsInstance(Context context) {
+        if (sInstance == null) {
+            synchronized (LOCK) {
                 Log.i(TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                        AppDatabase.class, AppDatabase.DATABASE_NAME)
+                        AppDatabase.class, AppDatabase.DATABASE_NAME
+                )
                         .build();
             }
         }

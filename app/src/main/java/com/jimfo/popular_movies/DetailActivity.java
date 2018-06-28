@@ -12,14 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,16 +38,14 @@ import com.jimfo.popular_movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.text.TextUtils.TruncateAt.MARQUEE;
 import static com.jimfo.popular_movies.utils.GeneralUtils.getDAWxH;
 import static com.jimfo.popular_movies.utils.GeneralUtils.getTrailerWidthAndHieght;
 
-public class DetailActivity extends AppCompatActivity{
-    //implements MovieTask.PostExecuteListener
+public class DetailActivity extends AppCompatActivity {
+
     private static final String TAG = DetailActivity.class.getSimpleName();
 
     private ActivityDetailBinding mBinding;
@@ -155,8 +148,7 @@ public class DetailActivity extends AppCompatActivity{
 
         if (null == film.getmBackdrop()) {
             Picasso.with(this).load(R.drawable.npa).into(mBinding.backDrop);
-        }
-        else {
+        } else {
             Picasso.with(this).load(film.getmBackdrop()).into(mBinding.backDrop);
         }
 
@@ -165,8 +157,7 @@ public class DetailActivity extends AppCompatActivity{
 
         if (null != film.getmBackdrop()) {
             loadImage(film.getmBackdrop());
-        }
-        else {
+        } else {
             setColors(R.color.colorPrimaryDark);
         }
 
@@ -264,8 +255,7 @@ public class DetailActivity extends AppCompatActivity{
             });
 
             setHeartState(mSaved);
-        }
-        else {
+        } else {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -297,17 +287,17 @@ public class DetailActivity extends AppCompatActivity{
         }
     }
 
-    public void onTrailerChange(View v){
+    public void onTrailerChange(View v) {
 
         trailerIV.setVisibility(View.VISIBLE);
 
         int[] wxh = getTrailerWidthAndHieght(mContext);
 
-        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(wxh[0],wxh[1]);
-        layoutParams.gravity= Gravity.CENTER;
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(wxh[0], wxh[1]);
+        layoutParams.gravity = Gravity.CENTER;
         trailerIV.setLayoutParams(layoutParams);
 
-        if(mTrailers.size() != 0) {
+        if (mTrailers.size() != 0) {
             switch (v.getId()) {
 
                 case R.id.leftTrailerBtn:
@@ -324,13 +314,12 @@ public class DetailActivity extends AppCompatActivity{
                             .into(trailerIV);
                     break;
             }
-        }
-        else{
+        } else {
             Toast.makeText(this, "No Trailers Available", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void removeWidget(View v){
+    public void removeWidget(View v) {
         switch (v.getId()) {
             case R.id.review_label:
                 reviewTV.setVisibility(View.GONE);

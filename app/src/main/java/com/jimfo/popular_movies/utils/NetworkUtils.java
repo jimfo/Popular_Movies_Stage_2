@@ -27,7 +27,10 @@ public class NetworkUtils {
 
     private static final String KEY = BuildConfig.TmdbSecAPIKey;
 
-    private NetworkUtils(){};
+    private NetworkUtils() {
+    }
+
+    ;
 
     public static ArrayList<Film> fetchMovieData(Context context, String request) {
         // Create URL object
@@ -45,7 +48,7 @@ public class NetworkUtils {
         return TmdbUtils.extractMovieData(context, jsonResponse, request);
     }
 
-    public static ArrayList<Review> fetchReviews(Context context, String id){
+    public static ArrayList<Review> fetchReviews(Context context, String id) {
 
         URL reviewURL = createUrl(context, context.getString(R.string.baseUrl) + id +
                 context.getString(R.string.revs) + "?api_key=" + KEY);
@@ -63,16 +66,16 @@ public class NetworkUtils {
         return TmdbUtils.extractReviewData(context, jsonReviewResponse, id);
     }
 
-    public static ArrayList<Trailer> fetchTrailers(Context context, String id){
+    public static ArrayList<Trailer> fetchTrailers(Context context, String id) {
 
         URL trailerURL = createUrl(context, context.getString(R.string.baseUrl) + id +
-                        context.getString(R.string.vids) + "?api_key=" + KEY);
+                context.getString(R.string.vids) + "?api_key=" + KEY);
 
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonTrailerResponse = null;
 
         try {
-             jsonTrailerResponse = makeHttpRequest(context, trailerURL);
+            jsonTrailerResponse = makeHttpRequest(context, trailerURL);
 
         }
         catch (IOException e) {
@@ -123,8 +126,7 @@ public class NetworkUtils {
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(context, inputStream);
-            }
-            else {
+            } else {
                 Log.v(TAG, context.getString(R.string.responseCodeError) + urlConnection.getResponseCode());
             }
         }
@@ -164,6 +166,7 @@ public class NetworkUtils {
 
     /**
      * Purpose : Method to check for network connectivity
+     *
      * @return : boolean
      */
     public static boolean isNetworkAvailable(Context context) {

@@ -20,9 +20,9 @@
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/empty"
-            android:gravity="center"
             android:background="@color/ll_color"
+            android:gravity="center"
+            android:text="@string/empty"
             android:textColor="@color/detail_activity_btn"
             android:visibility="gone"/>
     </FrameLayout>
@@ -50,17 +50,17 @@
             android:id="@+id/update_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"
-            android:padding="@dimen/tv_paddingBottom"
-            android:gravity="end"
-            android:onClick="update"
-            android:text="@string/updating"
-            android:textColor="@color/detail_activity_btn"
             android:clickable="true"
             android:drawableEnd="@drawable/ic_refresh_black_24dp"
             android:drawableRight="@drawable/ic_refresh_black_24dp"
             android:focusable="true"
             android:fontFamily="casual"
+            android:gravity="end"
+            android:onClick="update"
+            android:padding="@dimen/tv_paddingBottom"
+            android:text="@string/updating"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/detail_activity_btn"
             android:textSize="12sp"/>
 
     </LinearLayout>
