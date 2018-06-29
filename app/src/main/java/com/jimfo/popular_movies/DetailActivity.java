@@ -138,7 +138,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-        
+
         movie = savedInstanceState.getParcelable(MOVIE_KEY);
         mReviews = savedInstanceState.getParcelableArrayList(REVIEW_KEY);
         mTrailers = savedInstanceState.getParcelableArrayList(TRAILER_KEY);

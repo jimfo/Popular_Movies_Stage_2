@@ -1,21 +1,13 @@
 package com.jimfo.popular_movies;
 
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.util.Log;
@@ -28,23 +20,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
-import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.utils.NetworkUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapterRV.ItemClickListener,
         MovieTask.PostExecuteListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private final String SAVED_STATE = "state";
+    private static final String MOVIE_KEY = "movie";
 
     private String ab_title;
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
-    private List<Film> mFilms;
+    private ArrayList<Film> mFilms;
     private TextView emptyTV;
     private static String lastcall = "popular";
 
@@ -77,7 +67,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
-        if (NetworkUtils.isNetworkAvailable(this.getApplicationContext())) {
+        if (null != savedInstanceState && savedInstanceState.containsKey(MOVIE_KEY)) {
+            Log.i(TAG, " on create saved");
+            mFilms = savedInstanceState.getParcelableArrayList(MOVIE_KEY);
+            displayAppropriateView();
+            updateAdapter();
+        } else if (NetworkUtils.isNetworkAvailable(this.getApplicationContext())) {
 
             // if db is empty check if network is available and get movies from TMDB
             getMovies(lastcall);
@@ -86,6 +81,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             new MovieTask(this, this).execute(getResources().getString(R.string.favorite));
             //setupViewModel();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putParcelableArrayList(MOVIE_KEY, mFilms);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mFilms = savedInstanceState.getParcelableArrayList(MOVIE_KEY);
     }
 
     /**
