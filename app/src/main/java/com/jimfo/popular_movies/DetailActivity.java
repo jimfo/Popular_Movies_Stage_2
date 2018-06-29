@@ -12,9 +12,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,17 +49,19 @@ import static com.jimfo.popular_movies.utils.GeneralUtils.getTrailerWidthAndHieg
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
+    private static final String TRAILER_KEY = "trailers";
+    private static final String REVIEW_KEY = "reviews";
+    private static final String MOVIE_KEY = "movie";
 
     private ActivityDetailBinding mBinding;
     private AppDatabase mDb;
     private boolean mSaved;
-    private List<Trailer> mTrailers;
-    private List<Review> mReviews;
+    private ArrayList<Trailer> mTrailers;
+    private ArrayList<Review> mReviews;
     private TextView reviewTV;
     private ImageView trailerIV;
     private Context mContext;
     private ImageView imageview;
-
     private int reviewPosition = 0;
     private int trailerPosition = 0;
     private String youtubeURL;
@@ -69,15 +73,15 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mDb = AppDatabase.getsInstance(getApplicationContext());
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        reviewTV = findViewById(R.id.review_tv);
-        trailerIV = findViewById(R.id.trailer_iv);
-        imageview = findViewById(R.id.moviePoster);
-        mContext = getApplicationContext();
-        youtubeURL = this.getString(R.string.baseYoutubeUrl);
+        mDb          = AppDatabase.getsInstance(getApplicationContext());
+        mBinding     = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        reviewTV     = findViewById(R.id.review_tv);
+        trailerIV    = findViewById(R.id.trailer_iv);
+        imageview    = findViewById(R.id.moviePoster);
+        mContext     = getApplicationContext();
+        youtubeURL   = this.getString(R.string.baseYoutubeUrl);
         youtubeFront = this.getString(R.string.youtubeImg);
-        youtubeBack = this.getString(R.string.youtubeIdx);
+        youtubeBack  = this.getString(R.string.youtubeIdx);
 
         // Get info from intent
         Intent i = getIntent();
@@ -107,12 +111,37 @@ public class DetailActivity extends AppCompatActivity {
                     });
 
                     displayInfo(movie);
-                    getReviews();
-                    getTrailers();
+
+                    if(null != savedInstanceState) {
+                        mReviews = savedInstanceState.getParcelableArrayList(REVIEW_KEY);
+                        mTrailers = savedInstanceState.getParcelableArrayList(TRAILER_KEY);
+                    }
+                    else {
+                        getReviews();
+                        getTrailers();
+                    }
 
                 }
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putParcelable(MOVIE_KEY, movie);
+        savedInstanceState.putParcelableArrayList(REVIEW_KEY, mReviews);
+        savedInstanceState.putParcelableArrayList(TRAILER_KEY, mTrailers);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        
+        movie = savedInstanceState.getParcelable(MOVIE_KEY);
+        mReviews = savedInstanceState.getParcelableArrayList(REVIEW_KEY);
+        mTrailers = savedInstanceState.getParcelableArrayList(TRAILER_KEY);
     }
 
     public void getReviews() {
@@ -352,6 +381,11 @@ public class DetailActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
             case R.id.action_favorite:
                 mSaved = !mSaved;
                 updateDb(mSaved);

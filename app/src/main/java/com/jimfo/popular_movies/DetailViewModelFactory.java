@@ -10,7 +10,7 @@ public class DetailViewModelFactory extends ViewModelProvider.NewInstanceFactory
     private final AppDatabase mDb;
     private final String mMovieId;
 
-    public DetailViewModelFactory(AppDatabase db, String movieId) {
+    DetailViewModelFactory(AppDatabase db, String movieId) {
         mDb = db;
         mMovieId = movieId;
     }

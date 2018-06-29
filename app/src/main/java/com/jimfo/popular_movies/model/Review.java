@@ -1,6 +1,9 @@
 package com.jimfo.popular_movies.model;
 
-public class Review {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Review implements Parcelable {
 
     private String mReviewId;
 
@@ -65,4 +68,37 @@ public class Review {
             return "AUTHOR : " + mAuthor + "\n" + "REVIEW : " + mContent + "\n\n";
         }
     }
+
+    protected Review(Parcel in) {
+        mReviewId = in.readString();
+        mMovieId = in.readString();
+        mAuthor = in.readString();
+        mContent = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mReviewId);
+        dest.writeString(mMovieId);
+        dest.writeString(mAuthor);
+        dest.writeString(mContent);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {
+        @Override
+        public Review createFromParcel(Parcel in) {
+            return new Review(in);
+        }
+
+        @Override
+        public Review[] newArray(int size) {
+            return new Review[size];
+        }
+    };
 }

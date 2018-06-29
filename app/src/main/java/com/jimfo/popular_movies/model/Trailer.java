@@ -1,6 +1,9 @@
 package com.jimfo.popular_movies.model;
 
-public class Trailer {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Trailer implements Parcelable {
 
     private String mTrailerId;
 
@@ -44,4 +47,35 @@ public class Trailer {
                 "MOVIE ID " + mMovieId + "\n" +
                 "KEY " + mKey;
     }
+
+    protected Trailer(Parcel in) {
+        mTrailerId = in.readString();
+        mMovieId = in.readString();
+        mKey = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTrailerId);
+        dest.writeString(mMovieId);
+        dest.writeString(mKey);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Trailer> CREATOR = new Parcelable.Creator<Trailer>() {
+        @Override
+        public Trailer createFromParcel(Parcel in) {
+            return new Trailer(in);
+        }
+
+        @Override
+        public Trailer[] newArray(int size) {
+            return new Trailer[size];
+        }
+    };
 }

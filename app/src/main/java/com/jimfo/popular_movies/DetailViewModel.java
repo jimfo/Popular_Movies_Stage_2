@@ -8,13 +8,15 @@ import com.jimfo.popular_movies.model.Film;
 
 public class DetailViewModel extends ViewModel {
 
-    private LiveData<Film> movie;
+    private static final String TAG = DetailViewModel.class.getSimpleName();
 
-    public DetailViewModel(AppDatabase db, String id) {
-        movie = db.movieDao().loadMovieById(id);
+    private LiveData<Film> mFilm;
+
+    DetailViewModel(AppDatabase db, String id) {
+        mFilm = db.movieDao().loadMovieById(id);
     }
 
     public LiveData<Film> getMovie() {
-        return movie;
+        return mFilm;
     }
 }

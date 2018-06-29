@@ -13,16 +13,19 @@ public class MainViewModel extends AndroidViewModel {
 
     private static final String TAG = MainViewModel.class.getSimpleName();
 
-    private LiveData<List<Film>> films;
+    private LiveData<List<Film>> mFilms;
+    private LiveData<Film> mFilm;
 
     public MainViewModel(Application application) {
         super(application);
 
         AppDatabase mDb = AppDatabase.getsInstance(application);
-        films = mDb.movieDao().loadAllMovies();
+        mFilms = mDb.movieDao().loadAllMovies();
     }
 
+    public LiveData<Film> getMovie() {return mFilm;}
+
     public LiveData<List<Film>> getMovies() {
-        return films;
+        return mFilms;
     }
 }

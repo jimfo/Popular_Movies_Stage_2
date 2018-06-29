@@ -1,5 +1,7 @@
 package com.jimfo.popular_movies;
 
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -9,11 +11,14 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jimfo.popular_movies.adapter.MovieAdapterRV;
+import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.utils.NetworkUtils;
 
@@ -40,9 +46,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
     public RecyclerView mRecyclerView;
     private List<Film> mFilms;
     private TextView emptyTV;
-    Parcelable recyclerviewState;
-    RecyclerView.LayoutManager mLayoutManager;
-
+    private static String lastcall = "popular";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,35 +80,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         if (NetworkUtils.isNetworkAvailable(this.getApplicationContext())) {
 
             // if db is empty check if network is available and get movies from TMDB
-            new MovieTask(this, this).execute(getResources().getString(R.string.popular));
-            setTitle(getResources().getString(R.string.popular_movies));
+            getMovies(lastcall);
+
         } else {
-            setupViewModel();
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        super.onSaveInstanceState(state);
-
-        recyclerviewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
-        state.putParcelable(SAVED_STATE, recyclerviewState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-
-        if (state != null)
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (recyclerviewState != null) {
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerviewState);
+            new MovieTask(this, this).execute(getResources().getString(R.string.favorite));
+            //setupViewModel();
         }
     }
 
@@ -156,11 +136,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
      * @param call : The option selected from Menu
      */
     private void getMovies(String call) {
-
+        lastcall = call;
         switch (call) {
             case "favorite":
                 ab_title = getResources().getString(R.string.favorite_movies);
-                setupViewModel();
+                new MovieTask(this, this).execute(getString(R.string.favorite));
+                //setupViewModel();
                 break;
 
             case "popular":
@@ -200,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         if (movie != null) {
             Intent i = new Intent(this, DetailActivity.class);
             i.putExtra(MOVIE, movie);
+
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, imageview, ViewCompat.getTransitionName(imageview));
             startActivity(i, options.toBundle());
         }
@@ -214,24 +196,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         mAdapter = new MovieAdapterRV(this, this, mFilms);
         mRecyclerView.setAdapter(mAdapter);
         setTitle(ab_title);
-    }
-
-    private void setupViewModel() {
-        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getMovies().observe(this, new Observer<List<Film>>() {
-            @Override
-            public void onChanged(@Nullable List<Film> films) {
-
-                if (null == films || films.size() == 0) {
-                    mFilms = new ArrayList<>();
-                } else {
-                    mFilms = films;
-                }
-
-                displayAppropriateView();
-                mAdapter.setMovies(mFilms);
-            }
-        });
     }
 
     public void displayAppropriateView() {

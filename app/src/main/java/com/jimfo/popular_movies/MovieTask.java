@@ -2,11 +2,13 @@ package com.jimfo.popular_movies;
 
 import android.os.AsyncTask;
 
+import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.utils.NetworkUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
 
@@ -34,7 +36,19 @@ public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
     @Override
     protected ArrayList<Film> doInBackground(String... args) {
 
-        return NetworkUtils.fetchMovieData(myRef.get(), args[0]);
+        ArrayList<Film> films = new ArrayList<>();
+
+        switch (args[0]){
+            case "popular":
+            case "top_rated":
+                films = NetworkUtils.fetchMovieData(myRef.get(), args[0]);
+                break;
+            case "favorite":
+                films = new ArrayList<>(AppDatabase.getsInstance(myRef.get()).movieDao().loadFavoritedMovies());
+                break;
+        }
+        return films;
+        //return NetworkUtils.fetchMovieData(myRef.get(), args[0]);
     }
 
     @Override
