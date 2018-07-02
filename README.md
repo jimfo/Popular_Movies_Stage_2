@@ -4,7 +4,7 @@ Popular Movies is the second Udacity project challenge. This part of the project
 
 # Stage 1
 
-Stage 1 is the first part of the project challenge and can be found here. [Stage 1 link](https://github.com/jimfo/Popular_Movies_Stage_1)
+Stage 1 is the first part of the project challenge and can be found here. [Stage 1](https://github.com/jimfo/Popular_Movies_Stage_1)
 
 # Stage 2
 In this stage you’ll add additional functionality to the app you built in Stage 1.
