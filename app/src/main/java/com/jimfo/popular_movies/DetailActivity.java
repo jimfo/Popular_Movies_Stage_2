@@ -12,7 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
@@ -48,7 +50,8 @@ import static com.jimfo.popular_movies.utils.GeneralUtils.getTrailerWidthAndHieg
 
 public class DetailActivity extends AppCompatActivity {
 
-    private static final String TAG = DetailActivity.class.getSimpleName();
+    //private static final String TAG = DetailActivity.class.getSimpleName();
+
     private static final String TRAILER_KEY = "trailers";
     private static final String REVIEW_KEY = "reviews";
     private static final String MOVIE_KEY = "movie";
@@ -109,6 +112,17 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Fade fade = new Fade();
+                        View decor = getWindow().getDecorView();
+                        fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
+                        fade.excludeTarget(android.R.id.statusBarBackground, true);
+                        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+                        getWindow().setEnterTransition(fade);
+                        getWindow().setExitTransition(fade);
+                    }
 
                     displayInfo(movie);
 
@@ -190,17 +204,6 @@ public class DetailActivity extends AppCompatActivity {
             setColors(R.color.colorPrimaryDark);
         }
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade fade = new Fade();
-            View decor = getWindow().getDecorView();
-            fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
-            fade.excludeTarget(android.R.id.statusBarBackground, true);
-            fade.excludeTarget(android.R.id.navigationBarBackground, true);
-
-            getWindow().setEnterTransition(fade);
-            getWindow().setExitTransition(fade);
-        }
         setTitle(film.getmTitle());
     }
 
@@ -379,12 +382,9 @@ public class DetailActivity extends AppCompatActivity {
         return pos;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
 
             case R.id.action_favorite:
                 mSaved = !mSaved;

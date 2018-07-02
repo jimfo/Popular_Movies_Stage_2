@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/popular_movies"
-        android:title="@string/popularMovies"/>
-    <item
-        android:id="@+id/top_rated"
-        android:title="@string/topRated"/>
-    <item
-        android:id="@+id/my_favorites"
-        android:title="@string/myFavorites"/>
+    <group android:id="@+id/group"
+           android:checkableBehavior="single">
+        <item
+            android:id="@+id/popular_movies"
+            android:title="@string/popularMovies"
+            android:checked="true"/>
+        <item
+            android:id="@+id/top_rated"
+            android:title="@string/topRated"/>
+        <item
+            android:id="@+id/my_favorites"
+            android:title="@string/myFavorites"/>
+    </group>
 </menu>

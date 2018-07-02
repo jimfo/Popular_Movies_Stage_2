@@ -76,4 +76,5 @@
     <string name="refresh">refresh</string>
     <string name="review">review</string>
     <string name="empty">No Saved Items To Show</string>
+    <string name="flix">Flix</string>
 </resources>

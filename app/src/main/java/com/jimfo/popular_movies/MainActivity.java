@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,9 +30,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         MovieTask.PostExecuteListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String MOVIE_KEY = "movie";
 
-    private String ab_title;
+    private static String POSITION = "position";
+
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private ArrayList<Film> mFilms;
@@ -52,12 +53,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
 
             getWindow().setEnterTransition(fade);
             getWindow().setExitTransition(fade);
+            setTitle(this.getResources().getString(R.string.flix));
         }
 
         mRecyclerView = findViewById(R.id.rv_movies);
         LinearLayout refreshLL = findViewById(R.id.refreshbar_ll);
         refreshLL.setBackgroundColor(getResources().getColor(R.color.ll_color));
-        ab_title = getResources().getString(R.string.popular_movies);
         emptyTV = findViewById(R.id.empty_view);
 
         // Layout determined by orientation
@@ -67,19 +68,25 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
-        if (null != savedInstanceState && savedInstanceState.containsKey(MOVIE_KEY)) {
-            Log.i(TAG, " on create saved");
-            mFilms = savedInstanceState.getParcelableArrayList(MOVIE_KEY);
-            displayAppropriateView();
-            updateAdapter();
-        } else if (NetworkUtils.isNetworkAvailable(this.getApplicationContext())) {
+        if(savedInstanceState == null){
 
-            // if db is empty check if network is available and get movies from TMDB
-            getMovies(lastcall);
+            if (NetworkUtils.isNetworkAvailable(this.getApplicationContext())) {
 
-        } else {
-            new MovieTask(this, this).execute(getResources().getString(R.string.favorite));
-            //setupViewModel();
+                // if db is empty check if network is available and get movies from TMDB
+                getMovies(getString(R.string.popular));
+
+            }
+            else {
+                new MovieTask(this, this).execute(getResources().getString(R.string.favorite));
+            }
+        }
+        else {
+
+                Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(POSITION);
+                mFilms = savedInstanceState.getParcelableArrayList("key");
+                mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+                updateAdapter();
+
         }
     }
 
@@ -87,14 +94,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putParcelableArrayList(MOVIE_KEY, mFilms);
+        savedInstanceState.putParcelable(POSITION, mRecyclerView.getLayoutManager().onSaveInstanceState());
+        savedInstanceState.putParcelableArrayList("key", mFilms);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        mFilms = savedInstanceState.getParcelableArrayList(MOVIE_KEY);
+        Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(POSITION);
+        mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
     }
 
     /**
@@ -117,20 +126,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
      * @return : true
      */
     public boolean onOptionsItemSelected(MenuItem item) {
+        item.setChecked(true);
 
         switch (item.getItemId()) {
             case R.id.top_rated:
-                ab_title = this.getResources().getString(R.string.top_rated_movies);
                 getMovies(this.getResources().getString(R.string.top_rated));
                 return true;
 
             case R.id.popular_movies:
-                ab_title = this.getResources().getString(R.string.popular_movies);
                 getMovies(this.getResources().getString(R.string.popular));
                 return true;
 
             case R.id.my_favorites:
-                setTitle(this.getResources().getString(R.string.favorite_movies));
                 getMovies(this.getResources().getString(R.string.favorite));
                 return true;
 
@@ -147,23 +154,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
     private void getMovies(String call) {
         lastcall = call;
         switch (call) {
+
             case "favorite":
-                ab_title = getResources().getString(R.string.favorite_movies);
                 new MovieTask(this, this).execute(getString(R.string.favorite));
-                //setupViewModel();
                 break;
 
             case "popular":
-                ab_title = getResources().getString(R.string.popular_movies);
                 new MovieTask(this, this).execute(getString(R.string.popular));
                 break;
 
             case "top_rated":
-                ab_title = getResources().getString(R.string.top_rated_movies);
                 new MovieTask(this, this).execute(getString(R.string.top_rated));
                 break;
         }
-
     }
 
     /**
@@ -204,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
 
         mAdapter = new MovieAdapterRV(this, this, mFilms);
         mRecyclerView.setAdapter(mAdapter);
-        setTitle(ab_title);
     }
 
     public void displayAppropriateView() {
