@@ -43,12 +43,15 @@ public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
             case "top_rated":
                 films = NetworkUtils.fetchMovieData(myRef.get(), args[0]);
                 break;
+
             case "favorite":
                 films = new ArrayList<>(AppDatabase.getsInstance(myRef.get()).movieDao().loadFavoritedMovies());
                 break;
+
+            default:
+                break;
         }
         return films;
-        //return NetworkUtils.fetchMovieData(myRef.get(), args[0]);
     }
 
     @Override

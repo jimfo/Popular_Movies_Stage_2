@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         item.setChecked(true);
 
         switch (item.getItemId()) {
+//            case R.id.coming_soon:
+//                getMovies(this.getResources().getString(R.string.upcoming));
+//                return true;
+
             case R.id.top_rated:
                 getMovies(this.getResources().getString(R.string.top_rated));
                 return true;
@@ -165,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
 
             case "top_rated":
                 new MovieTask(this, this).execute(getString(R.string.top_rated));
+                break;
+
+            default:
                 break;
         }
     }

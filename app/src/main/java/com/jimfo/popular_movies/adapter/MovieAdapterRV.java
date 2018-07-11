@@ -85,7 +85,7 @@ public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomVi
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        AdjustableImageView aiv;
+        private AdjustableImageView aiv;
 
         CustomViewHolder(View itemView) {
             super(itemView);
