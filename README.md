@@ -1,3 +1,4 @@
+
 ## Popular_Movies Stage 2
 
 Popular Movies is the second Udacity project challenge. This part of the project queries TMDB for Trailers and Reviews and saves Favorites to a DB. Favorites are saved to the database using ORM (Object Relational Mapping) via Android's Room. Favorite movies are inserted and deleted in real time using LiveData.
