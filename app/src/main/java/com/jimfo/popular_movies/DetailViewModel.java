@@ -8,7 +8,6 @@ import com.jimfo.popular_movies.model.Film;
 
 public class DetailViewModel extends ViewModel {
 
-    private static final String TAG = DetailViewModel.class.getSimpleName();
 
     private LiveData<Film> mFilm;
 

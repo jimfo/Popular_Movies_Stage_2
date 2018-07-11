@@ -351,12 +351,18 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void removeWidget(View v) {
+
         switch (v.getId()) {
+
             case R.id.review_label:
                 reviewTV.setVisibility(View.GONE);
                 break;
+
             case R.id.trailer_label:
                 trailerIV.setVisibility(View.GONE);
+                break;
+
+            default:
                 break;
         }
     }

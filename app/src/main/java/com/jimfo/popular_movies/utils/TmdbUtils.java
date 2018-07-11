@@ -5,9 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.jimfo.popular_movies.BuildConfig;
 import com.jimfo.popular_movies.R;
-import com.jimfo.popular_movies.data.AppDatabase;
 import com.jimfo.popular_movies.model.Film;
 import com.jimfo.popular_movies.model.Review;
 import com.jimfo.popular_movies.model.Trailer;
