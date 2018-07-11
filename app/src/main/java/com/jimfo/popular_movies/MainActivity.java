@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,15 +28,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements MovieAdapterRV.ItemClickListener,
         MovieTask.PostExecuteListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private static String POSITION = "position";
 
     public MovieAdapterRV mAdapter;
     public RecyclerView mRecyclerView;
     private ArrayList<Film> mFilms;
     private TextView emptyTV;
-    private static String lastcall = "popular";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +125,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
         item.setChecked(true);
 
         switch (item.getItemId()) {
-//            case R.id.coming_soon:
-//                getMovies(this.getResources().getString(R.string.upcoming));
-//                return true;
 
             case R.id.top_rated:
                 getMovies(this.getResources().getString(R.string.top_rated));
@@ -156,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
      * @param call : The option selected from Menu
      */
     private void getMovies(String call) {
-        lastcall = call;
+
         switch (call) {
 
             case "favorite":

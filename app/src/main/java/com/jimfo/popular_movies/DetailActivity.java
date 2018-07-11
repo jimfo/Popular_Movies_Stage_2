@@ -45,8 +45,6 @@ import static com.jimfo.popular_movies.utils.GeneralUtils.getTrailerWidthAndHieg
 
 public class DetailActivity extends AppCompatActivity {
 
-    //private static final String TAG = DetailActivity.class.getSimpleName();
-
     private static final String TRAILER_KEY = "trailers";
     private static final String REVIEW_KEY = "reviews";
     private static final String MOVIE_KEY = "movie";
@@ -342,6 +340,9 @@ public class DetailActivity extends AppCompatActivity {
                     trailerPosition = setPosition(trailerPosition, mTrailers.size());
                     Picasso.with(this).load(youtubeFront + mTrailers.get(trailerPosition).getmKey() + youtubeBack)
                             .into(trailerIV);
+                    break;
+
+                default:
                     break;
             }
         } else {

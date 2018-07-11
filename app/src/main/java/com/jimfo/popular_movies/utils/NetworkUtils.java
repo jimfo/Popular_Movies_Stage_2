@@ -45,7 +45,7 @@ public class NetworkUtils {
             Log.e(TAG, context.getString(R.string.inputstreamError), e);
         }
 
-        return TmdbUtils.extractMovieData(context, jsonResponse, request);
+        return TmdbUtils.extractMovieData(context, jsonResponse);
     }
 
     public static ArrayList<Review> fetchReviews(Context context, String id) {

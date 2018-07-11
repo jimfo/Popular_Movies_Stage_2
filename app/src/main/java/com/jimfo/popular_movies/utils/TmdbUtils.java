@@ -24,14 +24,11 @@ public class TmdbUtils {
 
     // https://stackoverflow.com/questions/14570989/best-practice-for-storing-and-protecting-private-api-keys-in-applications
     // Answered by SANAT
-    private static final String KEY = BuildConfig.TmdbSecAPIKey;
 
     private TmdbUtils() {
     }
 
-    public static ArrayList<Film> extractMovieData(Context context, String response, String request) {
-
-        AppDatabase mDb = AppDatabase.getsInstance(context);
+    public static ArrayList<Film> extractMovieData(Context context, String response) {
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(response)) {

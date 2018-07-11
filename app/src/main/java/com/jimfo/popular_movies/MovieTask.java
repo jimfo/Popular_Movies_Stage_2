@@ -8,11 +8,8 @@ import com.jimfo.popular_movies.utils.NetworkUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MovieTask extends AsyncTask<String, Void, ArrayList<Film>> {
-
-    private static final String TAG = MovieTask.class.getSimpleName();
 
     private final WeakReference<MainActivity> myRef;
 

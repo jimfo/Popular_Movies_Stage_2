@@ -20,8 +20,6 @@ import static com.jimfo.popular_movies.utils.GeneralUtils.getWxH;
 
 public class MovieAdapterRV extends RecyclerView.Adapter<MovieAdapterRV.CustomViewHolder> {
 
-    private static final String TAG = MovieAdapterRV.class.getSimpleName();
-
     private List<Film> mFilms;
     private Context mContext;
     private ItemClickListener mListener;
