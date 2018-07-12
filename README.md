@@ -1,6 +1,8 @@
 
 ## Popular Movies Stage 2
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a678a232f2514bafb562f3f05d8fe191)](https://www.codacy.com/app/jimfo/Popular_Movies_Stage_2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jimfo/Popular_Movies_Stage_2&amp;utm_campaign=Badge_Grade)
+
 Popular Movies is the second Udacity project challenge. This part of the project queries TMDB for Trailers and Reviews and saves Favorites to a DB. Favorites are saved to the database using ORM (Object Relational Mapping) via Android's Room. Favorite movies are inserted and deleted in real time using LiveData.
 
 ### Stage 1
