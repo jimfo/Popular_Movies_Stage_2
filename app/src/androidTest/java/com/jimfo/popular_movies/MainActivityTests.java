@@ -27,7 +27,7 @@ public class MainActivityTests {
      * Clicks on a GridView item and checks it opens up the DetailActivity with the correct details.
      */
     @Test
-    public void clickGridViewItem_OpensOrderActivity() {
+    public void clickGridViewItemOpensDetailActivity() {
 
         onView(withId(R.id.rv_movies))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
