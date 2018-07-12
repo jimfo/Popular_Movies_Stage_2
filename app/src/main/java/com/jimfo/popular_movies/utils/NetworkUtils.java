@@ -25,8 +25,8 @@ public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String KEY = BuildConfig.TmdbSecAPIKey;
-
+   // private static final String KEY = BuildConfig.TmdbSecAPIKey; //
+    private static final String KEY = "5e6cde7da2a358d58f48da8f3318aba1";
     private NetworkUtils() {
     }
 

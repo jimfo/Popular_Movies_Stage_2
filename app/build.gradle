@@ -17,9 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each {
-        it.buildConfigField 'String', 'TmdbSecAPIKey', TmdbAPIKey
-    }
+//    buildTypes.each {
+//        it.buildConfigField 'String', 'TmdbSecAPIKey', TmdbAPIKey
+//    }
     repositories {
         mavenCentral()
     }
