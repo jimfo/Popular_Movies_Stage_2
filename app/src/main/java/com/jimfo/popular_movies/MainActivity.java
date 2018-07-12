@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterRV.It
             if (NetworkUtils.isNetworkAvailable(this.getApplicationContext())) {
 
                 // if db is empty check if network is available and get movies from TMDB
-                getMovies(getString(R.string.popular));
+                getMovies(getString(R.string.favorite));
 
             }
             else {

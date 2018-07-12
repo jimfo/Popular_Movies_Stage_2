@@ -8,6 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.assertEquals;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -21,7 +22,7 @@ public class MainActivityTests {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    private static final String MOVIE_TITLE = "Jurassic World: Fallen Kingdom";
+    private static final String MOVIE_TITLE = "Deadpool 2";
 
     /**
      * Clicks on a GridView item and checks it opens up the DetailActivity with the correct details.
@@ -35,4 +36,5 @@ public class MainActivityTests {
         // Checks that the DetailActivity opens with the correct movie name displayed
         onView(withId(R.id.movieTitle)).check(matches(withText(MOVIE_TITLE)));
     }
+
 }
