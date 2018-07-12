@@ -18,6 +18,10 @@ android {
         }
     }
 
+    buildTypes.each {
+        it.buildConfigField 'String', 'TmdbSecAPIKey', TmdbAPIKey
+    }
+
     repositories {
         mavenCentral()
     }
