@@ -8,13 +8,13 @@
             <!--android:checked="true"/>-->
         <item
             android:id="@+id/popular_movies"
-            android:title="@string/popularMovies"
-            android:checked="true"/>
+            android:title="@string/popularMovies"/>
         <item
             android:id="@+id/top_rated"
             android:title="@string/topRated"/>
         <item
             android:id="@+id/my_favorites"
-            android:title="@string/myFavorites"/>
+            android:title="@string/myFavorites"
+            android:checked="true"/>
     </group>
 </menu>
